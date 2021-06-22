@@ -16,15 +16,70 @@ class AppDatabase extends _$AppDatabase {
   @override
   int get schemaVersion => 1;
 
-  Future<List<ExpenseData>> getAllExpense() => select(expense).get();
-  Future<List<IncomeData>> getAllIncome() => select(income).get();
-  Future<List<BorrowData>> getAllBorrow() => select(borrow).get();
-  Future<List<LendData>> getAllLend() => select(lend).get();
+  Future<List<ExpenseData>> getAllExpense() => (select(expense)..orderBy([(u) => OrderingTerm(expression: u.time, mode: OrderingMode.desc)])).get();
+  Future<List<IncomeData>> getAllIncome() => (select(income)..orderBy([(u) => OrderingTerm(expression: u.time, mode: OrderingMode.desc)])).get();
+  Future<List<BorrowData>> getAllBorrow() => (select(borrow)..orderBy([(u) => OrderingTerm(expression: u.time, mode: OrderingMode.desc)])).get();
+  Future<List<LendData>> getAllLend() => (select(lend)..orderBy([(u) => OrderingTerm(expression: u.time, mode: OrderingMode.desc)])).get();
 
-  Stream<List<ExpenseData>> getMonthExpense(int month) =>
-      (select(expense)..where((tbl) => tbl.time.month.equals(month))).watch();
-  Stream<List<IncomeData>> getMonthIncome(int month) =>
-      (select(income)..where((tbl) => tbl.time.month.equals(month))).watch();
+  Stream<List<ExpenseData>> getYearExpense(DateTime date) =>
+      (select(expense)
+      ..where((tbl) => tbl.time.year.equals(date.year))
+      ..orderBy([(u) => OrderingTerm(expression: u.time, mode: OrderingMode.desc)]))
+      .watch();
+  Stream<List<IncomeData>> getYearIncome(DateTime date) =>
+      (select(income)
+      ..where((tbl) => tbl.time.year.equals(date.year))
+      ..orderBy([(u) => OrderingTerm(expression: u.time, mode: OrderingMode.desc)]))
+      .watch();
+
+  Stream<List<ExpenseData>> getMonthExpense(DateTime date) =>
+      (select(expense)
+      ..where((tbl) => tbl.time.month.equals(date.month))
+      ..where((tbl) => tbl.time.year.equals(date.year))
+      ..orderBy([(u) => OrderingTerm(expression: u.time, mode: OrderingMode.desc)]))
+      .watch();
+  Stream<List<IncomeData>> getMonthIncome(DateTime date) =>
+      (select(income)
+      ..where((tbl) => tbl.time.month.equals(date.month))
+      ..where((tbl) => tbl.time.year.equals(date.year))
+      ..orderBy([(u) => OrderingTerm(expression: u.time, mode: OrderingMode.desc)]))
+      .watch();
+  
+  Stream<List<ExpenseData>> getWeekExpense(DateTime weekend, DateTime weekstart) =>
+      (select(expense)
+      ..where((tbl) => tbl.time.day.isSmallerOrEqualValue(weekend.day))
+      ..where((tbl) => tbl.time.month.isSmallerOrEqualValue(weekend.month))
+      ..where((tbl) => tbl.time.year.isSmallerOrEqualValue(weekend.year))
+      ..where((tbl) => tbl.time.day.isBiggerOrEqualValue(weekstart.day))
+      ..where((tbl) => tbl.time.month.isBiggerOrEqualValue(weekstart.month))
+      ..where((tbl) => tbl.time.year.isBiggerOrEqualValue(weekstart.year))
+      ..orderBy([(u) => OrderingTerm(expression: u.time, mode: OrderingMode.desc)]))
+      .watch();
+  Stream<List<IncomeData>> getWeekIncome(DateTime weekend, DateTime weekstart) =>
+      (select(income)
+      ..where((tbl) => tbl.time.day.isSmallerOrEqualValue(weekend.day))
+      ..where((tbl) => tbl.time.month.isSmallerOrEqualValue(weekend.month))
+      ..where((tbl) => tbl.time.year.isSmallerOrEqualValue(weekend.year))
+      ..where((tbl) => tbl.time.day.isBiggerOrEqualValue(weekstart.day))
+      ..where((tbl) => tbl.time.month.isBiggerOrEqualValue(weekstart.month))
+      ..where((tbl) => tbl.time.year.isBiggerOrEqualValue(weekstart.year))
+      ..orderBy([(u) => OrderingTerm(expression: u.time, mode: OrderingMode.desc)]))
+      .watch();
+
+  Stream<List<ExpenseData>> getDayExpense(DateTime date) =>
+      (select(expense)
+      ..where((tbl) => tbl.time.day.equals(date.day))
+      ..where((tbl) => tbl.time.month.equals(date.month))
+      ..where((tbl) => tbl.time.year.equals(date.year))
+      ..orderBy([(u) => OrderingTerm(expression: u.time, mode: OrderingMode.desc)]))
+      .watch();
+  Stream<List<IncomeData>> getDayIncome(DateTime date) =>
+      (select(income)
+      ..where((tbl) => tbl.time.day.equals(date.day))
+      ..where((tbl) => tbl.time.month.equals(date.month))
+      ..where((tbl) => tbl.time.year.equals(date.year))
+      ..orderBy([(u) => OrderingTerm(expression: u.time, mode: OrderingMode.desc)]))
+      .watch();
 
   Future insertNewExpense(ExpenseData newexpense) => into(expense).insert(newexpense);
   Future insertNewIncome(IncomeData newincome) => into(income).insert(newincome);
@@ -35,4 +90,9 @@ class AppDatabase extends _$AppDatabase {
   Future deleteIncome(IncomeData incomedata) => delete(income).delete(incomedata);
   Future deleteBorrow(BorrowData borrowdata) => delete(borrow).delete(borrowdata);
   Future deleteLend(LendData lenddata) => delete(lend).delete(lenddata);
+
+  Future updateExpense(ExpenseData expensedata) => update(expense).replace(expensedata);
+  Future updateIncome(IncomeData incomedata) => update(income).replace(incomedata);
+  Future updateBorrow(BorrowData borrowdata) => update(borrow).replace(borrowdata);
+  Future updateLend(LendData lenddata) => update(lend).replace(lenddata);
 }

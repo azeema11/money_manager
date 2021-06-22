@@ -1,13 +1,9 @@
 import 'package:get/get.dart';
 
-class HomeController extends GetxController {
-  int currentIndex = 0;
+class AddTransactionController extends GetxController {
+  //TODO: Implement AddTransactionController
 
-  void onNavTap(int index) {
-    currentIndex = index;
-    update();
-  }
-
+  final count = 0.obs;
   @override
   void onInit() {
     super.onInit();
@@ -20,4 +16,5 @@ class HomeController extends GetxController {
 
   @override
   void onClose() {}
+  void increment() => count.value++;
 }

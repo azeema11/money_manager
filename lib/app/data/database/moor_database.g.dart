@@ -10,7 +10,7 @@ part of 'moor_database.dart';
 class ExpenseData extends DataClass implements Insertable<ExpenseData> {
   final int id;
   final String purpose;
-  final int amount;
+  final double amount;
   final DateTime time;
   ExpenseData(
       {required this.id,
@@ -25,7 +25,7 @@ class ExpenseData extends DataClass implements Insertable<ExpenseData> {
           .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
       purpose: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}purpose'])!,
-      amount: const IntType()
+      amount: const RealType()
           .mapFromDatabaseResponse(data['${effectivePrefix}amount'])!,
       time: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}time'])!,
@@ -36,7 +36,7 @@ class ExpenseData extends DataClass implements Insertable<ExpenseData> {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['purpose'] = Variable<String>(purpose);
-    map['amount'] = Variable<int>(amount);
+    map['amount'] = Variable<double>(amount);
     map['time'] = Variable<DateTime>(time);
     return map;
   }
@@ -56,7 +56,7 @@ class ExpenseData extends DataClass implements Insertable<ExpenseData> {
     return ExpenseData(
       id: serializer.fromJson<int>(json['id']),
       purpose: serializer.fromJson<String>(json['purpose']),
-      amount: serializer.fromJson<int>(json['amount']),
+      amount: serializer.fromJson<double>(json['amount']),
       time: serializer.fromJson<DateTime>(json['time']),
     );
   }
@@ -66,13 +66,13 @@ class ExpenseData extends DataClass implements Insertable<ExpenseData> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'purpose': serializer.toJson<String>(purpose),
-      'amount': serializer.toJson<int>(amount),
+      'amount': serializer.toJson<double>(amount),
       'time': serializer.toJson<DateTime>(time),
     };
   }
 
   ExpenseData copyWith(
-          {int? id, String? purpose, int? amount, DateTime? time}) =>
+          {int? id, String? purpose, double? amount, DateTime? time}) =>
       ExpenseData(
         id: id ?? this.id,
         purpose: purpose ?? this.purpose,
@@ -106,7 +106,7 @@ class ExpenseData extends DataClass implements Insertable<ExpenseData> {
 class ExpenseCompanion extends UpdateCompanion<ExpenseData> {
   final Value<int> id;
   final Value<String> purpose;
-  final Value<int> amount;
+  final Value<double> amount;
   final Value<DateTime> time;
   const ExpenseCompanion({
     this.id = const Value.absent(),
@@ -117,7 +117,7 @@ class ExpenseCompanion extends UpdateCompanion<ExpenseData> {
   ExpenseCompanion.insert({
     this.id = const Value.absent(),
     required String purpose,
-    required int amount,
+    required double amount,
     required DateTime time,
   })  : purpose = Value(purpose),
         amount = Value(amount),
@@ -125,7 +125,7 @@ class ExpenseCompanion extends UpdateCompanion<ExpenseData> {
   static Insertable<ExpenseData> custom({
     Expression<int>? id,
     Expression<String>? purpose,
-    Expression<int>? amount,
+    Expression<double>? amount,
     Expression<DateTime>? time,
   }) {
     return RawValuesInsertable({
@@ -139,7 +139,7 @@ class ExpenseCompanion extends UpdateCompanion<ExpenseData> {
   ExpenseCompanion copyWith(
       {Value<int>? id,
       Value<String>? purpose,
-      Value<int>? amount,
+      Value<double>? amount,
       Value<DateTime>? time}) {
     return ExpenseCompanion(
       id: id ?? this.id,
@@ -159,7 +159,7 @@ class ExpenseCompanion extends UpdateCompanion<ExpenseData> {
       map['purpose'] = Variable<String>(purpose.value);
     }
     if (amount.present) {
-      map['amount'] = Variable<int>(amount.value);
+      map['amount'] = Variable<double>(amount.value);
     }
     if (time.present) {
       map['time'] = Variable<DateTime>(time.value);
@@ -204,9 +204,9 @@ class $ExpenseTable extends Expense with TableInfo<$ExpenseTable, ExpenseData> {
 
   final VerificationMeta _amountMeta = const VerificationMeta('amount');
   @override
-  late final GeneratedIntColumn amount = _constructAmount();
-  GeneratedIntColumn _constructAmount() {
-    return GeneratedIntColumn(
+  late final GeneratedRealColumn amount = _constructAmount();
+  GeneratedRealColumn _constructAmount() {
+    return GeneratedRealColumn(
       'amount',
       $tableName,
       false,
@@ -278,7 +278,7 @@ class $ExpenseTable extends Expense with TableInfo<$ExpenseTable, ExpenseData> {
 class IncomeData extends DataClass implements Insertable<IncomeData> {
   final int id;
   final String source;
-  final int amount;
+  final double amount;
   final DateTime time;
   IncomeData(
       {required this.id,
@@ -293,7 +293,7 @@ class IncomeData extends DataClass implements Insertable<IncomeData> {
           .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
       source: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}source'])!,
-      amount: const IntType()
+      amount: const RealType()
           .mapFromDatabaseResponse(data['${effectivePrefix}amount'])!,
       time: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}time'])!,
@@ -304,7 +304,7 @@ class IncomeData extends DataClass implements Insertable<IncomeData> {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['source'] = Variable<String>(source);
-    map['amount'] = Variable<int>(amount);
+    map['amount'] = Variable<double>(amount);
     map['time'] = Variable<DateTime>(time);
     return map;
   }
@@ -324,7 +324,7 @@ class IncomeData extends DataClass implements Insertable<IncomeData> {
     return IncomeData(
       id: serializer.fromJson<int>(json['id']),
       source: serializer.fromJson<String>(json['source']),
-      amount: serializer.fromJson<int>(json['amount']),
+      amount: serializer.fromJson<double>(json['amount']),
       time: serializer.fromJson<DateTime>(json['time']),
     );
   }
@@ -334,12 +334,13 @@ class IncomeData extends DataClass implements Insertable<IncomeData> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'source': serializer.toJson<String>(source),
-      'amount': serializer.toJson<int>(amount),
+      'amount': serializer.toJson<double>(amount),
       'time': serializer.toJson<DateTime>(time),
     };
   }
 
-  IncomeData copyWith({int? id, String? source, int? amount, DateTime? time}) =>
+  IncomeData copyWith(
+          {int? id, String? source, double? amount, DateTime? time}) =>
       IncomeData(
         id: id ?? this.id,
         source: source ?? this.source,
@@ -373,7 +374,7 @@ class IncomeData extends DataClass implements Insertable<IncomeData> {
 class IncomeCompanion extends UpdateCompanion<IncomeData> {
   final Value<int> id;
   final Value<String> source;
-  final Value<int> amount;
+  final Value<double> amount;
   final Value<DateTime> time;
   const IncomeCompanion({
     this.id = const Value.absent(),
@@ -384,7 +385,7 @@ class IncomeCompanion extends UpdateCompanion<IncomeData> {
   IncomeCompanion.insert({
     this.id = const Value.absent(),
     required String source,
-    required int amount,
+    required double amount,
     required DateTime time,
   })  : source = Value(source),
         amount = Value(amount),
@@ -392,7 +393,7 @@ class IncomeCompanion extends UpdateCompanion<IncomeData> {
   static Insertable<IncomeData> custom({
     Expression<int>? id,
     Expression<String>? source,
-    Expression<int>? amount,
+    Expression<double>? amount,
     Expression<DateTime>? time,
   }) {
     return RawValuesInsertable({
@@ -406,7 +407,7 @@ class IncomeCompanion extends UpdateCompanion<IncomeData> {
   IncomeCompanion copyWith(
       {Value<int>? id,
       Value<String>? source,
-      Value<int>? amount,
+      Value<double>? amount,
       Value<DateTime>? time}) {
     return IncomeCompanion(
       id: id ?? this.id,
@@ -426,7 +427,7 @@ class IncomeCompanion extends UpdateCompanion<IncomeData> {
       map['source'] = Variable<String>(source.value);
     }
     if (amount.present) {
-      map['amount'] = Variable<int>(amount.value);
+      map['amount'] = Variable<double>(amount.value);
     }
     if (time.present) {
       map['time'] = Variable<DateTime>(time.value);
@@ -471,9 +472,9 @@ class $IncomeTable extends Income with TableInfo<$IncomeTable, IncomeData> {
 
   final VerificationMeta _amountMeta = const VerificationMeta('amount');
   @override
-  late final GeneratedIntColumn amount = _constructAmount();
-  GeneratedIntColumn _constructAmount() {
-    return GeneratedIntColumn(
+  late final GeneratedRealColumn amount = _constructAmount();
+  GeneratedRealColumn _constructAmount() {
+    return GeneratedRealColumn(
       'amount',
       $tableName,
       false,
@@ -545,7 +546,7 @@ class $IncomeTable extends Income with TableInfo<$IncomeTable, IncomeData> {
 class LendData extends DataClass implements Insertable<LendData> {
   final int id;
   final String description;
-  final int amount;
+  final double amount;
   final DateTime time;
   LendData(
       {required this.id,
@@ -560,7 +561,7 @@ class LendData extends DataClass implements Insertable<LendData> {
           .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
       description: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}description'])!,
-      amount: const IntType()
+      amount: const RealType()
           .mapFromDatabaseResponse(data['${effectivePrefix}amount'])!,
       time: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}time'])!,
@@ -571,7 +572,7 @@ class LendData extends DataClass implements Insertable<LendData> {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['description'] = Variable<String>(description);
-    map['amount'] = Variable<int>(amount);
+    map['amount'] = Variable<double>(amount);
     map['time'] = Variable<DateTime>(time);
     return map;
   }
@@ -591,7 +592,7 @@ class LendData extends DataClass implements Insertable<LendData> {
     return LendData(
       id: serializer.fromJson<int>(json['id']),
       description: serializer.fromJson<String>(json['description']),
-      amount: serializer.fromJson<int>(json['amount']),
+      amount: serializer.fromJson<double>(json['amount']),
       time: serializer.fromJson<DateTime>(json['time']),
     );
   }
@@ -601,13 +602,13 @@ class LendData extends DataClass implements Insertable<LendData> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'description': serializer.toJson<String>(description),
-      'amount': serializer.toJson<int>(amount),
+      'amount': serializer.toJson<double>(amount),
       'time': serializer.toJson<DateTime>(time),
     };
   }
 
   LendData copyWith(
-          {int? id, String? description, int? amount, DateTime? time}) =>
+          {int? id, String? description, double? amount, DateTime? time}) =>
       LendData(
         id: id ?? this.id,
         description: description ?? this.description,
@@ -641,7 +642,7 @@ class LendData extends DataClass implements Insertable<LendData> {
 class LendCompanion extends UpdateCompanion<LendData> {
   final Value<int> id;
   final Value<String> description;
-  final Value<int> amount;
+  final Value<double> amount;
   final Value<DateTime> time;
   const LendCompanion({
     this.id = const Value.absent(),
@@ -652,7 +653,7 @@ class LendCompanion extends UpdateCompanion<LendData> {
   LendCompanion.insert({
     this.id = const Value.absent(),
     required String description,
-    required int amount,
+    required double amount,
     required DateTime time,
   })  : description = Value(description),
         amount = Value(amount),
@@ -660,7 +661,7 @@ class LendCompanion extends UpdateCompanion<LendData> {
   static Insertable<LendData> custom({
     Expression<int>? id,
     Expression<String>? description,
-    Expression<int>? amount,
+    Expression<double>? amount,
     Expression<DateTime>? time,
   }) {
     return RawValuesInsertable({
@@ -674,7 +675,7 @@ class LendCompanion extends UpdateCompanion<LendData> {
   LendCompanion copyWith(
       {Value<int>? id,
       Value<String>? description,
-      Value<int>? amount,
+      Value<double>? amount,
       Value<DateTime>? time}) {
     return LendCompanion(
       id: id ?? this.id,
@@ -694,7 +695,7 @@ class LendCompanion extends UpdateCompanion<LendData> {
       map['description'] = Variable<String>(description.value);
     }
     if (amount.present) {
-      map['amount'] = Variable<int>(amount.value);
+      map['amount'] = Variable<double>(amount.value);
     }
     if (time.present) {
       map['time'] = Variable<DateTime>(time.value);
@@ -740,9 +741,9 @@ class $LendTable extends Lend with TableInfo<$LendTable, LendData> {
 
   final VerificationMeta _amountMeta = const VerificationMeta('amount');
   @override
-  late final GeneratedIntColumn amount = _constructAmount();
-  GeneratedIntColumn _constructAmount() {
-    return GeneratedIntColumn(
+  late final GeneratedRealColumn amount = _constructAmount();
+  GeneratedRealColumn _constructAmount() {
+    return GeneratedRealColumn(
       'amount',
       $tableName,
       false,
@@ -816,7 +817,7 @@ class $LendTable extends Lend with TableInfo<$LendTable, LendData> {
 class BorrowData extends DataClass implements Insertable<BorrowData> {
   final int id;
   final String description;
-  final int amount;
+  final double amount;
   final DateTime time;
   BorrowData(
       {required this.id,
@@ -831,7 +832,7 @@ class BorrowData extends DataClass implements Insertable<BorrowData> {
           .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
       description: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}description'])!,
-      amount: const IntType()
+      amount: const RealType()
           .mapFromDatabaseResponse(data['${effectivePrefix}amount'])!,
       time: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}time'])!,
@@ -842,7 +843,7 @@ class BorrowData extends DataClass implements Insertable<BorrowData> {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['description'] = Variable<String>(description);
-    map['amount'] = Variable<int>(amount);
+    map['amount'] = Variable<double>(amount);
     map['time'] = Variable<DateTime>(time);
     return map;
   }
@@ -862,7 +863,7 @@ class BorrowData extends DataClass implements Insertable<BorrowData> {
     return BorrowData(
       id: serializer.fromJson<int>(json['id']),
       description: serializer.fromJson<String>(json['description']),
-      amount: serializer.fromJson<int>(json['amount']),
+      amount: serializer.fromJson<double>(json['amount']),
       time: serializer.fromJson<DateTime>(json['time']),
     );
   }
@@ -872,13 +873,13 @@ class BorrowData extends DataClass implements Insertable<BorrowData> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'description': serializer.toJson<String>(description),
-      'amount': serializer.toJson<int>(amount),
+      'amount': serializer.toJson<double>(amount),
       'time': serializer.toJson<DateTime>(time),
     };
   }
 
   BorrowData copyWith(
-          {int? id, String? description, int? amount, DateTime? time}) =>
+          {int? id, String? description, double? amount, DateTime? time}) =>
       BorrowData(
         id: id ?? this.id,
         description: description ?? this.description,
@@ -912,7 +913,7 @@ class BorrowData extends DataClass implements Insertable<BorrowData> {
 class BorrowCompanion extends UpdateCompanion<BorrowData> {
   final Value<int> id;
   final Value<String> description;
-  final Value<int> amount;
+  final Value<double> amount;
   final Value<DateTime> time;
   const BorrowCompanion({
     this.id = const Value.absent(),
@@ -923,7 +924,7 @@ class BorrowCompanion extends UpdateCompanion<BorrowData> {
   BorrowCompanion.insert({
     this.id = const Value.absent(),
     required String description,
-    required int amount,
+    required double amount,
     required DateTime time,
   })  : description = Value(description),
         amount = Value(amount),
@@ -931,7 +932,7 @@ class BorrowCompanion extends UpdateCompanion<BorrowData> {
   static Insertable<BorrowData> custom({
     Expression<int>? id,
     Expression<String>? description,
-    Expression<int>? amount,
+    Expression<double>? amount,
     Expression<DateTime>? time,
   }) {
     return RawValuesInsertable({
@@ -945,7 +946,7 @@ class BorrowCompanion extends UpdateCompanion<BorrowData> {
   BorrowCompanion copyWith(
       {Value<int>? id,
       Value<String>? description,
-      Value<int>? amount,
+      Value<double>? amount,
       Value<DateTime>? time}) {
     return BorrowCompanion(
       id: id ?? this.id,
@@ -965,7 +966,7 @@ class BorrowCompanion extends UpdateCompanion<BorrowData> {
       map['description'] = Variable<String>(description.value);
     }
     if (amount.present) {
-      map['amount'] = Variable<int>(amount.value);
+      map['amount'] = Variable<double>(amount.value);
     }
     if (time.present) {
       map['time'] = Variable<DateTime>(time.value);
@@ -1011,9 +1012,9 @@ class $BorrowTable extends Borrow with TableInfo<$BorrowTable, BorrowData> {
 
   final VerificationMeta _amountMeta = const VerificationMeta('amount');
   @override
-  late final GeneratedIntColumn amount = _constructAmount();
-  GeneratedIntColumn _constructAmount() {
-    return GeneratedIntColumn(
+  late final GeneratedRealColumn amount = _constructAmount();
+  GeneratedRealColumn _constructAmount() {
+    return GeneratedRealColumn(
       'amount',
       $tableName,
       false,
