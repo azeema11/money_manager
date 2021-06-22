@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.azerro.money_manager">
    <application
-        android:label="money_manager"
+        android:label="Money Manager"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
