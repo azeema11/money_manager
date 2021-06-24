@@ -10,7 +10,9 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.2
   custom_navigation_bar: ^0.8.2
+  flutter_rounded_date_picker: ^2.0.2
   font_awesome_flutter: ^9.1.0
+  form_field_validator: ^1.1.0
   get: 4.1.4
   intl: ^0.17.0
   moor_flutter: ^4.0.0
