@@ -1,5 +1,9 @@
 import 'package:get/get.dart';
 
+import 'package:money_manager/app/modules/add_lending/bindings/add_lending_binding.dart';
+import 'package:money_manager/app/modules/add_lending/views/add_lending_view.dart';
+import 'package:money_manager/app/modules/add_transaction/bindings/add_transaction_binding.dart';
+import 'package:money_manager/app/modules/add_transaction/views/add_transaction_view.dart';
 import 'package:money_manager/app/modules/home/bindings/home_binding.dart';
 import 'package:money_manager/app/modules/home/views/home_view.dart';
 import 'package:money_manager/app/modules/lendings/bindings/lendings_binding.dart';

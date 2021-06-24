@@ -90,7 +90,7 @@ class AppDatabase extends _$AppDatabase {
   Future deleteIncome(IncomeData incomedata) => delete(income).delete(incomedata);
   Future deleteBorrow(BorrowData borrowdata) => delete(borrow).delete(borrowdata);
   Future deleteLend(LendData lenddata) => delete(lend).delete(lenddata);
-  
+
   Future updateBorrow(BorrowData borrowdata) => update(borrow).replace(borrowdata);
   Future updateLend(LendData lenddata) => update(lend).replace(lenddata);
 }

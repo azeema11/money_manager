@@ -134,8 +134,6 @@ class TransactionsController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    //database.insertNewExpense(ExpenseCompanion.insert(purpose: "purpose", amount: 1000, time: DateTime.now()));
-    //database.insertNewIncome(IncomeCompanion.insert(source: "Return", amount: 100, time: DateTime.now()));
   }
 
   @override
