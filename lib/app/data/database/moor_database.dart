@@ -81,18 +81,16 @@ class AppDatabase extends _$AppDatabase {
       ..orderBy([(u) => OrderingTerm(expression: u.time, mode: OrderingMode.desc)]))
       .watch();
 
-  Future insertNewExpense(ExpenseData newexpense) => into(expense).insert(newexpense);
-  Future insertNewIncome(IncomeData newincome) => into(income).insert(newincome);
-  Future insertNewBorrow(BorrowData newborrow) => into(borrow).insert(newborrow);
-  Future insertNewLend(LendData newlend) => into(lend).insert(newlend);
+  Future insertNewExpense(ExpenseCompanion newexpense) => into(expense).insert(newexpense);
+  Future insertNewIncome(IncomeCompanion newincome) => into(income).insert(newincome);
+  Future insertNewBorrow(BorrowCompanion newborrow) => into(borrow).insert(newborrow);
+  Future insertNewLend(LendCompanion newlend) => into(lend).insert(newlend);
 
   Future deleteExpense(ExpenseData expensedata) => delete(expense).delete(expensedata);
   Future deleteIncome(IncomeData incomedata) => delete(income).delete(incomedata);
   Future deleteBorrow(BorrowData borrowdata) => delete(borrow).delete(borrowdata);
   Future deleteLend(LendData lenddata) => delete(lend).delete(lenddata);
 
-  Future updateExpense(ExpenseData expensedata) => update(expense).replace(expensedata);
-  Future updateIncome(IncomeData incomedata) => update(income).replace(incomedata);
   Future updateBorrow(BorrowData borrowdata) => update(borrow).replace(borrowdata);
   Future updateLend(LendData lenddata) => update(lend).replace(lenddata);
 }

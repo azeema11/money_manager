@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:money_manager/app/data/database/moor_database.dart';
 import 'package:async/async.dart';
@@ -6,6 +7,9 @@ class TransactionsController extends GetxController {
   int transactionIndex = 0;
   int typeIndex = 0;
   AppDatabase database = AppDatabase();
+  final formKey = GlobalKey<FormState>();
+  final FocusNode f1 = new FocusNode();
+  final FocusNode f2 = new FocusNode();
   List<ExpenseData> expenseData = [];
   List<IncomeData> incomeData = [];
   List<DateTime> dates = [];
@@ -14,9 +18,15 @@ class TransactionsController extends GetxController {
   List<List<DateTime>> weeks = [[]];
   DateTime selectedDate =
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
-  DateTime weekend = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
-  DateTime weekstart = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)
-            .subtract(Duration(days: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).weekday - 1));
+  DateTime weekend =
+      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+  DateTime weekstart =
+      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)
+          .subtract(Duration(
+              days: DateTime(DateTime.now().year, DateTime.now().month,
+                          DateTime.now().day)
+                      .weekday -
+                  1));
 
   void onTap(int index) {
     transactionIndex = index;
@@ -124,16 +134,6 @@ class TransactionsController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    /*database.insertNewExpense(ExpenseData(
-        id: 6,
-        purpose: "Food",
-        amount: 100,
-        time: DateTime.now().subtract(Duration(days: 765))));
-    database.insertNewIncome(IncomeData(
-        id: 6,
-        source: "Salary",
-        amount: 1000,
-        time: DateTime.now().subtract(Duration(days: 765))));*/
   }
 
   @override

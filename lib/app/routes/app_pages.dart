@@ -33,16 +33,6 @@ class AppPages {
       name: _Paths.LENDINGS,
       page: () => LendingsView(),
       binding: LendingsBinding(),
-    ),
-    GetPage(
-      name: _Paths.ADD_TRANSACTION,
-      page: () => AddTransactionView(),
-      binding: AddTransactionBinding(),
-    ),
-    GetPage(
-      name: _Paths.ADD_LENDING,
-      page: () => AddLendingView(),
-      binding: AddLendingBinding(),
-    ),
+    )
   ];
 }
