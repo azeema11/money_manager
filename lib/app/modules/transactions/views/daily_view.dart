@@ -123,6 +123,5 @@ class DailyView extends StatelessWidget {
             );
           }
         });
-    ;
   }
 }
