@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:money_manager/app/data/database/moor_database.dart';
 import 'package:async/async.dart';
+import 'package:money_manager/app/modules/home/controllers/home_controller.dart';
 
 class TransactionsController extends GetxController {
+  HomeController homeController = Get.find<HomeController>();
   int transactionIndex = 0;
   int typeIndex = 0;
-  AppDatabase database = AppDatabase();
+  late AppDatabase database;
   final formKey = GlobalKey<FormState>();
   final FocusNode f1 = new FocusNode();
   final FocusNode f2 = new FocusNode();
@@ -134,6 +136,7 @@ class TransactionsController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
+    database = homeController.database;
   }
 
   @override
