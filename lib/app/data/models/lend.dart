@@ -5,4 +5,5 @@ class Lend extends Table {
   TextColumn get description => text()();
   RealColumn get amount => real()();
   DateTimeColumn get time => dateTime()();
+  BoolColumn get status => boolean().withDefault(Constant(false))();
 }

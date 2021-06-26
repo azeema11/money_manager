@@ -548,11 +548,13 @@ class LendData extends DataClass implements Insertable<LendData> {
   final String description;
   final double amount;
   final DateTime time;
+  final bool status;
   LendData(
       {required this.id,
       required this.description,
       required this.amount,
-      required this.time});
+      required this.time,
+      required this.status});
   factory LendData.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -565,6 +567,8 @@ class LendData extends DataClass implements Insertable<LendData> {
           .mapFromDatabaseResponse(data['${effectivePrefix}amount'])!,
       time: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}time'])!,
+      status: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}status'])!,
     );
   }
   @override
@@ -574,6 +578,7 @@ class LendData extends DataClass implements Insertable<LendData> {
     map['description'] = Variable<String>(description);
     map['amount'] = Variable<double>(amount);
     map['time'] = Variable<DateTime>(time);
+    map['status'] = Variable<bool>(status);
     return map;
   }
 
@@ -583,6 +588,7 @@ class LendData extends DataClass implements Insertable<LendData> {
       description: Value(description),
       amount: Value(amount),
       time: Value(time),
+      status: Value(status),
     );
   }
 
@@ -594,6 +600,7 @@ class LendData extends DataClass implements Insertable<LendData> {
       description: serializer.fromJson<String>(json['description']),
       amount: serializer.fromJson<double>(json['amount']),
       time: serializer.fromJson<DateTime>(json['time']),
+      status: serializer.fromJson<bool>(json['status']),
     );
   }
   @override
@@ -604,16 +611,22 @@ class LendData extends DataClass implements Insertable<LendData> {
       'description': serializer.toJson<String>(description),
       'amount': serializer.toJson<double>(amount),
       'time': serializer.toJson<DateTime>(time),
+      'status': serializer.toJson<bool>(status),
     };
   }
 
   LendData copyWith(
-          {int? id, String? description, double? amount, DateTime? time}) =>
+          {int? id,
+          String? description,
+          double? amount,
+          DateTime? time,
+          bool? status}) =>
       LendData(
         id: id ?? this.id,
         description: description ?? this.description,
         amount: amount ?? this.amount,
         time: time ?? this.time,
+        status: status ?? this.status,
       );
   @override
   String toString() {
@@ -621,14 +634,17 @@ class LendData extends DataClass implements Insertable<LendData> {
           ..write('id: $id, ')
           ..write('description: $description, ')
           ..write('amount: $amount, ')
-          ..write('time: $time')
+          ..write('time: $time, ')
+          ..write('status: $status')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(id.hashCode,
-      $mrjc(description.hashCode, $mrjc(amount.hashCode, time.hashCode))));
+  int get hashCode => $mrjf($mrjc(
+      id.hashCode,
+      $mrjc(description.hashCode,
+          $mrjc(amount.hashCode, $mrjc(time.hashCode, status.hashCode)))));
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -636,7 +652,8 @@ class LendData extends DataClass implements Insertable<LendData> {
           other.id == this.id &&
           other.description == this.description &&
           other.amount == this.amount &&
-          other.time == this.time);
+          other.time == this.time &&
+          other.status == this.status);
 }
 
 class LendCompanion extends UpdateCompanion<LendData> {
@@ -644,17 +661,20 @@ class LendCompanion extends UpdateCompanion<LendData> {
   final Value<String> description;
   final Value<double> amount;
   final Value<DateTime> time;
+  final Value<bool> status;
   const LendCompanion({
     this.id = const Value.absent(),
     this.description = const Value.absent(),
     this.amount = const Value.absent(),
     this.time = const Value.absent(),
+    this.status = const Value.absent(),
   });
   LendCompanion.insert({
     this.id = const Value.absent(),
     required String description,
     required double amount,
     required DateTime time,
+    this.status = const Value.absent(),
   })  : description = Value(description),
         amount = Value(amount),
         time = Value(time);
@@ -663,12 +683,14 @@ class LendCompanion extends UpdateCompanion<LendData> {
     Expression<String>? description,
     Expression<double>? amount,
     Expression<DateTime>? time,
+    Expression<bool>? status,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (description != null) 'description': description,
       if (amount != null) 'amount': amount,
       if (time != null) 'time': time,
+      if (status != null) 'status': status,
     });
   }
 
@@ -676,12 +698,14 @@ class LendCompanion extends UpdateCompanion<LendData> {
       {Value<int>? id,
       Value<String>? description,
       Value<double>? amount,
-      Value<DateTime>? time}) {
+      Value<DateTime>? time,
+      Value<bool>? status}) {
     return LendCompanion(
       id: id ?? this.id,
       description: description ?? this.description,
       amount: amount ?? this.amount,
       time: time ?? this.time,
+      status: status ?? this.status,
     );
   }
 
@@ -700,6 +724,9 @@ class LendCompanion extends UpdateCompanion<LendData> {
     if (time.present) {
       map['time'] = Variable<DateTime>(time.value);
     }
+    if (status.present) {
+      map['status'] = Variable<bool>(status.value);
+    }
     return map;
   }
 
@@ -709,7 +736,8 @@ class LendCompanion extends UpdateCompanion<LendData> {
           ..write('id: $id, ')
           ..write('description: $description, ')
           ..write('amount: $amount, ')
-          ..write('time: $time')
+          ..write('time: $time, ')
+          ..write('status: $status')
           ..write(')'))
         .toString();
   }
@@ -761,8 +789,16 @@ class $LendTable extends Lend with TableInfo<$LendTable, LendData> {
     );
   }
 
+  final VerificationMeta _statusMeta = const VerificationMeta('status');
   @override
-  List<GeneratedColumn> get $columns => [id, description, amount, time];
+  late final GeneratedBoolColumn status = _constructStatus();
+  GeneratedBoolColumn _constructStatus() {
+    return GeneratedBoolColumn('status', $tableName, false,
+        defaultValue: Constant(false));
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [id, description, amount, time, status];
   @override
   $LendTable get asDslTable => this;
   @override
@@ -797,6 +833,10 @@ class $LendTable extends Lend with TableInfo<$LendTable, LendData> {
     } else if (isInserting) {
       context.missing(_timeMeta);
     }
+    if (data.containsKey('status')) {
+      context.handle(_statusMeta,
+          status.isAcceptableOrUnknown(data['status']!, _statusMeta));
+    }
     return context;
   }
 
@@ -819,11 +859,13 @@ class BorrowData extends DataClass implements Insertable<BorrowData> {
   final String description;
   final double amount;
   final DateTime time;
+  final bool status;
   BorrowData(
       {required this.id,
       required this.description,
       required this.amount,
-      required this.time});
+      required this.time,
+      required this.status});
   factory BorrowData.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -836,6 +878,8 @@ class BorrowData extends DataClass implements Insertable<BorrowData> {
           .mapFromDatabaseResponse(data['${effectivePrefix}amount'])!,
       time: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}time'])!,
+      status: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}status'])!,
     );
   }
   @override
@@ -845,6 +889,7 @@ class BorrowData extends DataClass implements Insertable<BorrowData> {
     map['description'] = Variable<String>(description);
     map['amount'] = Variable<double>(amount);
     map['time'] = Variable<DateTime>(time);
+    map['status'] = Variable<bool>(status);
     return map;
   }
 
@@ -854,6 +899,7 @@ class BorrowData extends DataClass implements Insertable<BorrowData> {
       description: Value(description),
       amount: Value(amount),
       time: Value(time),
+      status: Value(status),
     );
   }
 
@@ -865,6 +911,7 @@ class BorrowData extends DataClass implements Insertable<BorrowData> {
       description: serializer.fromJson<String>(json['description']),
       amount: serializer.fromJson<double>(json['amount']),
       time: serializer.fromJson<DateTime>(json['time']),
+      status: serializer.fromJson<bool>(json['status']),
     );
   }
   @override
@@ -875,16 +922,22 @@ class BorrowData extends DataClass implements Insertable<BorrowData> {
       'description': serializer.toJson<String>(description),
       'amount': serializer.toJson<double>(amount),
       'time': serializer.toJson<DateTime>(time),
+      'status': serializer.toJson<bool>(status),
     };
   }
 
   BorrowData copyWith(
-          {int? id, String? description, double? amount, DateTime? time}) =>
+          {int? id,
+          String? description,
+          double? amount,
+          DateTime? time,
+          bool? status}) =>
       BorrowData(
         id: id ?? this.id,
         description: description ?? this.description,
         amount: amount ?? this.amount,
         time: time ?? this.time,
+        status: status ?? this.status,
       );
   @override
   String toString() {
@@ -892,14 +945,17 @@ class BorrowData extends DataClass implements Insertable<BorrowData> {
           ..write('id: $id, ')
           ..write('description: $description, ')
           ..write('amount: $amount, ')
-          ..write('time: $time')
+          ..write('time: $time, ')
+          ..write('status: $status')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(id.hashCode,
-      $mrjc(description.hashCode, $mrjc(amount.hashCode, time.hashCode))));
+  int get hashCode => $mrjf($mrjc(
+      id.hashCode,
+      $mrjc(description.hashCode,
+          $mrjc(amount.hashCode, $mrjc(time.hashCode, status.hashCode)))));
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -907,7 +963,8 @@ class BorrowData extends DataClass implements Insertable<BorrowData> {
           other.id == this.id &&
           other.description == this.description &&
           other.amount == this.amount &&
-          other.time == this.time);
+          other.time == this.time &&
+          other.status == this.status);
 }
 
 class BorrowCompanion extends UpdateCompanion<BorrowData> {
@@ -915,17 +972,20 @@ class BorrowCompanion extends UpdateCompanion<BorrowData> {
   final Value<String> description;
   final Value<double> amount;
   final Value<DateTime> time;
+  final Value<bool> status;
   const BorrowCompanion({
     this.id = const Value.absent(),
     this.description = const Value.absent(),
     this.amount = const Value.absent(),
     this.time = const Value.absent(),
+    this.status = const Value.absent(),
   });
   BorrowCompanion.insert({
     this.id = const Value.absent(),
     required String description,
     required double amount,
     required DateTime time,
+    this.status = const Value.absent(),
   })  : description = Value(description),
         amount = Value(amount),
         time = Value(time);
@@ -934,12 +994,14 @@ class BorrowCompanion extends UpdateCompanion<BorrowData> {
     Expression<String>? description,
     Expression<double>? amount,
     Expression<DateTime>? time,
+    Expression<bool>? status,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (description != null) 'description': description,
       if (amount != null) 'amount': amount,
       if (time != null) 'time': time,
+      if (status != null) 'status': status,
     });
   }
 
@@ -947,12 +1009,14 @@ class BorrowCompanion extends UpdateCompanion<BorrowData> {
       {Value<int>? id,
       Value<String>? description,
       Value<double>? amount,
-      Value<DateTime>? time}) {
+      Value<DateTime>? time,
+      Value<bool>? status}) {
     return BorrowCompanion(
       id: id ?? this.id,
       description: description ?? this.description,
       amount: amount ?? this.amount,
       time: time ?? this.time,
+      status: status ?? this.status,
     );
   }
 
@@ -971,6 +1035,9 @@ class BorrowCompanion extends UpdateCompanion<BorrowData> {
     if (time.present) {
       map['time'] = Variable<DateTime>(time.value);
     }
+    if (status.present) {
+      map['status'] = Variable<bool>(status.value);
+    }
     return map;
   }
 
@@ -980,7 +1047,8 @@ class BorrowCompanion extends UpdateCompanion<BorrowData> {
           ..write('id: $id, ')
           ..write('description: $description, ')
           ..write('amount: $amount, ')
-          ..write('time: $time')
+          ..write('time: $time, ')
+          ..write('status: $status')
           ..write(')'))
         .toString();
   }
@@ -1032,8 +1100,16 @@ class $BorrowTable extends Borrow with TableInfo<$BorrowTable, BorrowData> {
     );
   }
 
+  final VerificationMeta _statusMeta = const VerificationMeta('status');
   @override
-  List<GeneratedColumn> get $columns => [id, description, amount, time];
+  late final GeneratedBoolColumn status = _constructStatus();
+  GeneratedBoolColumn _constructStatus() {
+    return GeneratedBoolColumn('status', $tableName, false,
+        defaultValue: Constant(false));
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [id, description, amount, time, status];
   @override
   $BorrowTable get asDslTable => this;
   @override
@@ -1067,6 +1143,10 @@ class $BorrowTable extends Borrow with TableInfo<$BorrowTable, BorrowData> {
           _timeMeta, time.isAcceptableOrUnknown(data['time']!, _timeMeta));
     } else if (isInserting) {
       context.missing(_timeMeta);
+    }
+    if (data.containsKey('status')) {
+      context.handle(_statusMeta,
+          status.isAcceptableOrUnknown(data['status']!, _statusMeta));
     }
     return context;
   }
