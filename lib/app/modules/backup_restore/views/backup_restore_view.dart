@@ -21,30 +21,36 @@ class BackupRestoreView extends GetView<BackupRestoreController> {
                 : Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
-                        color: Colors.white,
-                        child: TextButton(
-                          onPressed: () async {
-                            await _.backup();
-                          },
+                      TextButton(
+                        onPressed: () async {
+                          await _.backup();
+                        },
+                        child: Container(
+                          color: Colors.blue,
+                          alignment: Alignment.center,
+                          height: 35.0,
+                          width: 70.0,
                           child: Text(
                             "Backup",
-                            style: MMTheme.ts3,
+                            style: MMTheme.ts3.copyWith(color: Colors.white),
                           ),
                         ),
                       ),
                       SizedBox(
                         height: 20,
                       ),
-                      Container(
-                        color: Colors.white,
-                        child: TextButton(
-                          onPressed: () async {
-                            await _.restore();
-                          },
+                      TextButton(
+                        onPressed: () async {
+                          await _.restore();
+                        },
+                        child: Container(
+                          color: Colors.blue,
+                          alignment: Alignment.center,
+                          height: 35.0,
+                          width: 70.0,
                           child: Text(
                             "Restore",
-                            style: MMTheme.ts3,
+                            style: MMTheme.ts3.copyWith(color: Colors.white),
                           ),
                         ),
                       ),
