@@ -36,8 +36,8 @@ class BackupRestore {
     );
   }
 
-  Future restore() async {
-    FilePicker.platform.clearTemporaryFiles();
+  Future restore() async { 
+    await FilePicker.platform.clearTemporaryFiles();
     final dbFolder = await getDatabasesPath();
     final file = File(p.join(dbFolder, 'db.sqlite'));
 
