@@ -7,6 +7,7 @@ part 'moor_database.g.dart';
 
 @UseMoor(tables: [Expense, Income, Lend, Borrow])
 class AppDatabase extends _$AppDatabase {
+  
   AppDatabase()
       : super((FlutterQueryExecutor.inDatabaseFolder(
           path: 'db.sqlite',

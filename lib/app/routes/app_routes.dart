@@ -7,10 +7,12 @@ abstract class Routes {
   static const HOME = _Paths.HOME;
   static const TRANSACTIONS = _Paths.TRANSACTIONS;
   static const LENDINGS = _Paths.LENDINGS;
+  static const BACKUP_RESTORE = _Paths.BACKUP_RESTORE;
 }
 
 abstract class _Paths {
   static const HOME = '/home';
   static const TRANSACTIONS = '/transactions';
   static const LENDINGS = '/lendings';
+  static const BACKUP_RESTORE = '/backup-restore';
 }

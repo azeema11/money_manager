@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:get/get.dart';
+import 'package:money_manager/app/modules/backup_restore/views/backup_restore_view.dart';
 import 'package:money_manager/app/modules/lendings/views/lendings_view.dart';
 import 'package:money_manager/app/modules/transactions/views/transactions_view.dart';
 
@@ -13,7 +14,7 @@ class HomeView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return GetBuilder<HomeController>(builder: (_) {
       return Scaffold(
-        body: [TransactionsView(), LendingsView()][_.currentIndex],
+        body: [TransactionsView(), LendingsView(), BackupRestoreView()][_.currentIndex],
         bottomNavigationBar: CustomNavigationBar(
           onTap: _.onNavTap,
           currentIndex: _.currentIndex,
@@ -25,6 +26,10 @@ class HomeView extends GetView<HomeController> {
             CustomNavigationBarItem(
               title: Text("Lendings"),
               icon: Icon(FontAwesomeIcons.moneyBillAlt),
+            ),
+            CustomNavigationBarItem(
+              title: Text("Backup/Restore"),
+              icon: Icon(Icons.backup),
             ),
           ],
         ),
