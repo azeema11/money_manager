@@ -43,6 +43,14 @@ class LendingsController extends GetxController {
         [database.getAllLend(status), database.getAllBorrow(status)]);
   }
 
+  double total(List list) {
+    double total = 0;
+    list.forEach((element) {
+      total = total + element.amount;
+    });
+    return total;
+  }
+
   @override
   void onInit() {
     super.onInit();

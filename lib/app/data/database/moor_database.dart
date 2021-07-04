@@ -54,14 +54,8 @@ class AppDatabase extends _$AppDatabase {
   Stream<List<ExpenseData>> getWeekExpense(
           DateTime weekend, DateTime weekstart) =>
       (select(expense)
-            ..where((tbl) => tbl.time.day.isSmallerOrEqualValue(weekend.day))
-            ..where(
-                (tbl) => tbl.time.month.isSmallerOrEqualValue(weekend.month))
-            ..where((tbl) => tbl.time.year.isSmallerOrEqualValue(weekend.year))
-            ..where((tbl) => tbl.time.day.isBiggerOrEqualValue(weekstart.day))
-            ..where(
-                (tbl) => tbl.time.month.isBiggerOrEqualValue(weekstart.month))
-            ..where((tbl) => tbl.time.year.isBiggerOrEqualValue(weekstart.year))
+            ..where((tbl) => tbl.time.isSmallerThanValue(weekend.add(Duration(days: 1))))
+            ..where((tbl) => tbl.time.isBiggerOrEqualValue(weekstart))
             ..orderBy([
               (u) => OrderingTerm(expression: u.time, mode: OrderingMode.desc)
             ]))
@@ -69,14 +63,8 @@ class AppDatabase extends _$AppDatabase {
   Stream<List<IncomeData>> getWeekIncome(
           DateTime weekend, DateTime weekstart) =>
       (select(income)
-            ..where((tbl) => tbl.time.day.isSmallerOrEqualValue(weekend.day))
-            ..where(
-                (tbl) => tbl.time.month.isSmallerOrEqualValue(weekend.month))
-            ..where((tbl) => tbl.time.year.isSmallerOrEqualValue(weekend.year))
-            ..where((tbl) => tbl.time.day.isBiggerOrEqualValue(weekstart.day))
-            ..where(
-                (tbl) => tbl.time.month.isBiggerOrEqualValue(weekstart.month))
-            ..where((tbl) => tbl.time.year.isBiggerOrEqualValue(weekstart.year))
+            ..where((tbl) => tbl.time.isSmallerThanValue(weekend.add(Duration(days: 1))))
+            ..where((tbl) => tbl.time.isBiggerOrEqualValue(weekstart))
             ..orderBy([
               (u) => OrderingTerm(expression: u.time, mode: OrderingMode.desc)
             ]))

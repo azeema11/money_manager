@@ -12,6 +12,7 @@ dependencies:
   custom_navigation_bar: ^0.8.2
   file_picker: ^3.0.3
   flutter_rounded_date_picker: ^2.0.2
+  flutter_speed_dial: ^3.0.5
   font_awesome_flutter: ^9.1.0
   form_field_validator: ^1.1.0
   get: 4.1.4
