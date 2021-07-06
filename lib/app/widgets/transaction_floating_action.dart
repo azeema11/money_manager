@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:get/get.dart';
+import 'package:money_manager/app/data/transaction_types/expense_types.dart';
+import 'package:money_manager/app/data/transaction_types/income_types.dart';
 import 'package:money_manager/app/modules/transactions/controllers/transactions_controller.dart';
 import 'package:money_manager/app/theme/mmtheme.dart';
 import 'package:intl/intl.dart';
@@ -29,11 +31,12 @@ class TransactionFloatingAction extends StatelessWidget {
           onTap: () async {
             late double amount;
             late String description;
+            late String type;
             Color dateColor = Colors.black;
             DateTime date = DateTime(0, 0, 0);
             await Get.bottomSheet(
               Container(
-                height: Get.height / 2.7,
+                height: Get.height / 2.1,
                 padding: EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 10.0),
                 color: Colors.white,
                 child: Form(
@@ -106,6 +109,51 @@ class TransactionFloatingAction extends StatelessWidget {
                             },
                           ),
                         ),
+                        SizedBox(
+                          height: 15.0,
+                        ),
+                        Container(
+                          child: DropdownButtonFormField(
+                            items: List.generate(
+                              IncomeTypeName.values.length,
+                              (int index) => DropdownMenuItem(
+                                value: IncomeTypeName.values.toList()[index],
+                                child:
+                                    Text(IncomeTypeName.values.toList()[index]),
+                              ),
+                            ),
+                            decoration: InputDecoration(
+                              labelText: 'Income Type',
+                              focusColor: Colors.blue,
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 3.0,
+                                ),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(17.0)),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.blue,
+                                  width: 3.0,
+                                ),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(17.0)),
+                              ),
+                            ),
+                            onChanged: (String? newValue) {
+                              if (newValue != null) {
+                                type = newValue;
+                              }
+                              setModalState(() {});
+                            },
+                            validator: (String? value){
+                              if(value == null){
+                                return "Select type";
+                              }
+                            },
+                          ),
+                        ),
                         Container(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -157,16 +205,18 @@ class TransactionFloatingAction extends StatelessWidget {
                           height: 40.0,
                           child: TextButton(
                             onPressed: () async {
-                              if (transactionsController.formKey.currentState!.validate() &&
+                              if (transactionsController.formKey.currentState!
+                                      .validate() &&
                                   date != DateTime(0, 0, 0)) {
                                 dateColor = Colors.black;
                                 setModalState(() {});
                                 await transactionsController.database
-                                      .insertNewIncome(IncomeCompanion.insert(
-                                    source: description,
-                                    amount: amount,
-                                    time: date,
-                                  ));
+                                    .insertNewIncome(IncomeCompanion.insert(
+                                  source: description,
+                                  amount: amount,
+                                  time: date,
+                                  type: type,
+                                ));
                                 Get.back();
                                 transactionsController.update();
                               } else if (date == DateTime(0, 0, 0)) {
@@ -185,6 +235,7 @@ class TransactionFloatingAction extends StatelessWidget {
                   }),
                 ),
               ),
+              isScrollControlled: true,
             );
           },
         ),
@@ -198,11 +249,12 @@ class TransactionFloatingAction extends StatelessWidget {
           onTap: () async {
             late double amount;
             late String description;
+            late String type;
             Color dateColor = Colors.black;
             DateTime date = DateTime(0, 0, 0);
             await Get.bottomSheet(
               Container(
-                height: Get.height / 2.7,
+                height: Get.height / 2.1,
                 padding: EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 10.0),
                 color: Colors.white,
                 child: Form(
@@ -275,6 +327,51 @@ class TransactionFloatingAction extends StatelessWidget {
                             },
                           ),
                         ),
+                        SizedBox(
+                          height: 15.0,
+                        ),
+                        Container(
+                          child: DropdownButtonFormField(
+                            items: List.generate(
+                              ExpenseTypeName.values.length,
+                              (int index) => DropdownMenuItem(
+                                value: ExpenseTypeName.values.toList()[index],
+                                child: Text(
+                                    ExpenseTypeName.values.toList()[index]),
+                              ),
+                            ),
+                            decoration: InputDecoration(
+                              labelText: 'Expense Type',
+                              focusColor: Colors.blue,
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 3.0,
+                                ),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(17.0)),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.blue,
+                                  width: 3.0,
+                                ),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(17.0)),
+                              ),
+                            ),
+                            onChanged: (String? newValue) {
+                              if (newValue != null) {
+                                type = newValue;
+                              }
+                              setModalState(() {});
+                            },
+                            validator: (String? value){
+                              if(value == null){
+                                return "Select type";
+                              }
+                            },
+                          ),
+                        ),
                         Container(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -326,16 +423,18 @@ class TransactionFloatingAction extends StatelessWidget {
                           height: 40.0,
                           child: TextButton(
                             onPressed: () async {
-                              if (transactionsController.formKey.currentState!.validate() &&
+                              if (transactionsController.formKey.currentState!
+                                      .validate() &&
                                   date != DateTime(0, 0, 0)) {
                                 dateColor = Colors.black;
                                 setModalState(() {});
                                 await transactionsController.database
-                                      .insertNewExpense(ExpenseCompanion.insert(
-                                    purpose: description,
-                                    amount: amount,
-                                    time: date,
-                                  ));
+                                    .insertNewExpense(ExpenseCompanion.insert(
+                                  purpose: description,
+                                  amount: amount,
+                                  time: date,
+                                  type: type,
+                                ));
                                 Get.back();
                                 transactionsController.update();
                               } else if (date == DateTime(0, 0, 0)) {
@@ -354,6 +453,7 @@ class TransactionFloatingAction extends StatelessWidget {
                   }),
                 ),
               ),
+              isScrollControlled: true,
             );
           },
         ),

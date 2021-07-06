@@ -12,11 +12,13 @@ class ExpenseData extends DataClass implements Insertable<ExpenseData> {
   final String purpose;
   final double amount;
   final DateTime time;
+  final String type;
   ExpenseData(
       {required this.id,
       required this.purpose,
       required this.amount,
-      required this.time});
+      required this.time,
+      required this.type});
   factory ExpenseData.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -29,6 +31,8 @@ class ExpenseData extends DataClass implements Insertable<ExpenseData> {
           .mapFromDatabaseResponse(data['${effectivePrefix}amount'])!,
       time: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}time'])!,
+      type: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}type'])!,
     );
   }
   @override
@@ -38,6 +42,7 @@ class ExpenseData extends DataClass implements Insertable<ExpenseData> {
     map['purpose'] = Variable<String>(purpose);
     map['amount'] = Variable<double>(amount);
     map['time'] = Variable<DateTime>(time);
+    map['type'] = Variable<String>(type);
     return map;
   }
 
@@ -47,6 +52,7 @@ class ExpenseData extends DataClass implements Insertable<ExpenseData> {
       purpose: Value(purpose),
       amount: Value(amount),
       time: Value(time),
+      type: Value(type),
     );
   }
 
@@ -58,6 +64,7 @@ class ExpenseData extends DataClass implements Insertable<ExpenseData> {
       purpose: serializer.fromJson<String>(json['purpose']),
       amount: serializer.fromJson<double>(json['amount']),
       time: serializer.fromJson<DateTime>(json['time']),
+      type: serializer.fromJson<String>(json['type']),
     );
   }
   @override
@@ -68,16 +75,22 @@ class ExpenseData extends DataClass implements Insertable<ExpenseData> {
       'purpose': serializer.toJson<String>(purpose),
       'amount': serializer.toJson<double>(amount),
       'time': serializer.toJson<DateTime>(time),
+      'type': serializer.toJson<String>(type),
     };
   }
 
   ExpenseData copyWith(
-          {int? id, String? purpose, double? amount, DateTime? time}) =>
+          {int? id,
+          String? purpose,
+          double? amount,
+          DateTime? time,
+          String? type}) =>
       ExpenseData(
         id: id ?? this.id,
         purpose: purpose ?? this.purpose,
         amount: amount ?? this.amount,
         time: time ?? this.time,
+        type: type ?? this.type,
       );
   @override
   String toString() {
@@ -85,14 +98,17 @@ class ExpenseData extends DataClass implements Insertable<ExpenseData> {
           ..write('id: $id, ')
           ..write('purpose: $purpose, ')
           ..write('amount: $amount, ')
-          ..write('time: $time')
+          ..write('time: $time, ')
+          ..write('type: $type')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(id.hashCode,
-      $mrjc(purpose.hashCode, $mrjc(amount.hashCode, time.hashCode))));
+  int get hashCode => $mrjf($mrjc(
+      id.hashCode,
+      $mrjc(purpose.hashCode,
+          $mrjc(amount.hashCode, $mrjc(time.hashCode, type.hashCode)))));
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -100,7 +116,8 @@ class ExpenseData extends DataClass implements Insertable<ExpenseData> {
           other.id == this.id &&
           other.purpose == this.purpose &&
           other.amount == this.amount &&
-          other.time == this.time);
+          other.time == this.time &&
+          other.type == this.type);
 }
 
 class ExpenseCompanion extends UpdateCompanion<ExpenseData> {
@@ -108,31 +125,37 @@ class ExpenseCompanion extends UpdateCompanion<ExpenseData> {
   final Value<String> purpose;
   final Value<double> amount;
   final Value<DateTime> time;
+  final Value<String> type;
   const ExpenseCompanion({
     this.id = const Value.absent(),
     this.purpose = const Value.absent(),
     this.amount = const Value.absent(),
     this.time = const Value.absent(),
+    this.type = const Value.absent(),
   });
   ExpenseCompanion.insert({
     this.id = const Value.absent(),
     required String purpose,
     required double amount,
     required DateTime time,
+    required String type,
   })  : purpose = Value(purpose),
         amount = Value(amount),
-        time = Value(time);
+        time = Value(time),
+        type = Value(type);
   static Insertable<ExpenseData> custom({
     Expression<int>? id,
     Expression<String>? purpose,
     Expression<double>? amount,
     Expression<DateTime>? time,
+    Expression<String>? type,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (purpose != null) 'purpose': purpose,
       if (amount != null) 'amount': amount,
       if (time != null) 'time': time,
+      if (type != null) 'type': type,
     });
   }
 
@@ -140,12 +163,14 @@ class ExpenseCompanion extends UpdateCompanion<ExpenseData> {
       {Value<int>? id,
       Value<String>? purpose,
       Value<double>? amount,
-      Value<DateTime>? time}) {
+      Value<DateTime>? time,
+      Value<String>? type}) {
     return ExpenseCompanion(
       id: id ?? this.id,
       purpose: purpose ?? this.purpose,
       amount: amount ?? this.amount,
       time: time ?? this.time,
+      type: type ?? this.type,
     );
   }
 
@@ -164,6 +189,9 @@ class ExpenseCompanion extends UpdateCompanion<ExpenseData> {
     if (time.present) {
       map['time'] = Variable<DateTime>(time.value);
     }
+    if (type.present) {
+      map['type'] = Variable<String>(type.value);
+    }
     return map;
   }
 
@@ -173,7 +201,8 @@ class ExpenseCompanion extends UpdateCompanion<ExpenseData> {
           ..write('id: $id, ')
           ..write('purpose: $purpose, ')
           ..write('amount: $amount, ')
-          ..write('time: $time')
+          ..write('time: $time, ')
+          ..write('type: $type')
           ..write(')'))
         .toString();
   }
@@ -224,8 +253,19 @@ class $ExpenseTable extends Expense with TableInfo<$ExpenseTable, ExpenseData> {
     );
   }
 
+  final VerificationMeta _typeMeta = const VerificationMeta('type');
   @override
-  List<GeneratedColumn> get $columns => [id, purpose, amount, time];
+  late final GeneratedTextColumn type = _constructType();
+  GeneratedTextColumn _constructType() {
+    return GeneratedTextColumn(
+      'type',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [id, purpose, amount, time, type];
   @override
   $ExpenseTable get asDslTable => this;
   @override
@@ -258,6 +298,12 @@ class $ExpenseTable extends Expense with TableInfo<$ExpenseTable, ExpenseData> {
     } else if (isInserting) {
       context.missing(_timeMeta);
     }
+    if (data.containsKey('type')) {
+      context.handle(
+          _typeMeta, type.isAcceptableOrUnknown(data['type']!, _typeMeta));
+    } else if (isInserting) {
+      context.missing(_typeMeta);
+    }
     return context;
   }
 
@@ -280,11 +326,13 @@ class IncomeData extends DataClass implements Insertable<IncomeData> {
   final String source;
   final double amount;
   final DateTime time;
+  final String type;
   IncomeData(
       {required this.id,
       required this.source,
       required this.amount,
-      required this.time});
+      required this.time,
+      required this.type});
   factory IncomeData.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -297,6 +345,8 @@ class IncomeData extends DataClass implements Insertable<IncomeData> {
           .mapFromDatabaseResponse(data['${effectivePrefix}amount'])!,
       time: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}time'])!,
+      type: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}type'])!,
     );
   }
   @override
@@ -306,6 +356,7 @@ class IncomeData extends DataClass implements Insertable<IncomeData> {
     map['source'] = Variable<String>(source);
     map['amount'] = Variable<double>(amount);
     map['time'] = Variable<DateTime>(time);
+    map['type'] = Variable<String>(type);
     return map;
   }
 
@@ -315,6 +366,7 @@ class IncomeData extends DataClass implements Insertable<IncomeData> {
       source: Value(source),
       amount: Value(amount),
       time: Value(time),
+      type: Value(type),
     );
   }
 
@@ -326,6 +378,7 @@ class IncomeData extends DataClass implements Insertable<IncomeData> {
       source: serializer.fromJson<String>(json['source']),
       amount: serializer.fromJson<double>(json['amount']),
       time: serializer.fromJson<DateTime>(json['time']),
+      type: serializer.fromJson<String>(json['type']),
     );
   }
   @override
@@ -336,16 +389,22 @@ class IncomeData extends DataClass implements Insertable<IncomeData> {
       'source': serializer.toJson<String>(source),
       'amount': serializer.toJson<double>(amount),
       'time': serializer.toJson<DateTime>(time),
+      'type': serializer.toJson<String>(type),
     };
   }
 
   IncomeData copyWith(
-          {int? id, String? source, double? amount, DateTime? time}) =>
+          {int? id,
+          String? source,
+          double? amount,
+          DateTime? time,
+          String? type}) =>
       IncomeData(
         id: id ?? this.id,
         source: source ?? this.source,
         amount: amount ?? this.amount,
         time: time ?? this.time,
+        type: type ?? this.type,
       );
   @override
   String toString() {
@@ -353,14 +412,17 @@ class IncomeData extends DataClass implements Insertable<IncomeData> {
           ..write('id: $id, ')
           ..write('source: $source, ')
           ..write('amount: $amount, ')
-          ..write('time: $time')
+          ..write('time: $time, ')
+          ..write('type: $type')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(id.hashCode,
-      $mrjc(source.hashCode, $mrjc(amount.hashCode, time.hashCode))));
+  int get hashCode => $mrjf($mrjc(
+      id.hashCode,
+      $mrjc(source.hashCode,
+          $mrjc(amount.hashCode, $mrjc(time.hashCode, type.hashCode)))));
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -368,7 +430,8 @@ class IncomeData extends DataClass implements Insertable<IncomeData> {
           other.id == this.id &&
           other.source == this.source &&
           other.amount == this.amount &&
-          other.time == this.time);
+          other.time == this.time &&
+          other.type == this.type);
 }
 
 class IncomeCompanion extends UpdateCompanion<IncomeData> {
@@ -376,31 +439,37 @@ class IncomeCompanion extends UpdateCompanion<IncomeData> {
   final Value<String> source;
   final Value<double> amount;
   final Value<DateTime> time;
+  final Value<String> type;
   const IncomeCompanion({
     this.id = const Value.absent(),
     this.source = const Value.absent(),
     this.amount = const Value.absent(),
     this.time = const Value.absent(),
+    this.type = const Value.absent(),
   });
   IncomeCompanion.insert({
     this.id = const Value.absent(),
     required String source,
     required double amount,
     required DateTime time,
+    required String type,
   })  : source = Value(source),
         amount = Value(amount),
-        time = Value(time);
+        time = Value(time),
+        type = Value(type);
   static Insertable<IncomeData> custom({
     Expression<int>? id,
     Expression<String>? source,
     Expression<double>? amount,
     Expression<DateTime>? time,
+    Expression<String>? type,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (source != null) 'source': source,
       if (amount != null) 'amount': amount,
       if (time != null) 'time': time,
+      if (type != null) 'type': type,
     });
   }
 
@@ -408,12 +477,14 @@ class IncomeCompanion extends UpdateCompanion<IncomeData> {
       {Value<int>? id,
       Value<String>? source,
       Value<double>? amount,
-      Value<DateTime>? time}) {
+      Value<DateTime>? time,
+      Value<String>? type}) {
     return IncomeCompanion(
       id: id ?? this.id,
       source: source ?? this.source,
       amount: amount ?? this.amount,
       time: time ?? this.time,
+      type: type ?? this.type,
     );
   }
 
@@ -432,6 +503,9 @@ class IncomeCompanion extends UpdateCompanion<IncomeData> {
     if (time.present) {
       map['time'] = Variable<DateTime>(time.value);
     }
+    if (type.present) {
+      map['type'] = Variable<String>(type.value);
+    }
     return map;
   }
 
@@ -441,7 +515,8 @@ class IncomeCompanion extends UpdateCompanion<IncomeData> {
           ..write('id: $id, ')
           ..write('source: $source, ')
           ..write('amount: $amount, ')
-          ..write('time: $time')
+          ..write('time: $time, ')
+          ..write('type: $type')
           ..write(')'))
         .toString();
   }
@@ -492,8 +567,19 @@ class $IncomeTable extends Income with TableInfo<$IncomeTable, IncomeData> {
     );
   }
 
+  final VerificationMeta _typeMeta = const VerificationMeta('type');
   @override
-  List<GeneratedColumn> get $columns => [id, source, amount, time];
+  late final GeneratedTextColumn type = _constructType();
+  GeneratedTextColumn _constructType() {
+    return GeneratedTextColumn(
+      'type',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [id, source, amount, time, type];
   @override
   $IncomeTable get asDslTable => this;
   @override
@@ -525,6 +611,12 @@ class $IncomeTable extends Income with TableInfo<$IncomeTable, IncomeData> {
           _timeMeta, time.isAcceptableOrUnknown(data['time']!, _timeMeta));
     } else if (isInserting) {
       context.missing(_timeMeta);
+    }
+    if (data.containsKey('type')) {
+      context.handle(
+          _typeMeta, type.isAcceptableOrUnknown(data['type']!, _typeMeta));
+    } else if (isInserting) {
+      context.missing(_typeMeta);
     }
     return context;
   }

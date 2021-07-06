@@ -97,6 +97,9 @@ class MonthlyView extends StatelessWidget {
                       itemBuilder: (context, index) {
                         return TransactionCard(
                           id: index,
+                          type: transactionsController.transactionIndex == 0
+                              ? transactionsController.expenseData[index].type
+                              : transactionsController.incomeData[index].type,
                           onTap: () async {
                             if (transactionsController.transactionIndex == 0) {
                               await transactionsController.database

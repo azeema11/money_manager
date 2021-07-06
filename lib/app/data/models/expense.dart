@@ -5,4 +5,5 @@ class Expense extends Table {
   TextColumn get purpose => text()();
   RealColumn get amount => real()();
   DateTimeColumn get time => dateTime()();
+  TextColumn get type => text()();
 }

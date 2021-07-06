@@ -5,4 +5,5 @@ class Income extends Table {
   TextColumn get source => text()();
   RealColumn get amount => real()();
   DateTimeColumn get time => dateTime()();
+  TextColumn get type => text()();
 }

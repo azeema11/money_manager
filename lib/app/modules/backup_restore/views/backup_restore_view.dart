@@ -23,7 +23,21 @@ class BackupRestoreView extends GetView<BackupRestoreController> {
                     children: [
                       TextButton(
                         onPressed: () async {
-                          await _.backup();
+                          await Get.defaultDialog(
+                            title: "Confirm Backup",
+                            titleStyle: MMTheme.ts3,
+                            middleText: "Do you want to backup existing data?",
+                            textCancel: "Back",
+                            textConfirm: "Confirm",
+                            confirmTextColor: Colors.white,
+                            onCancel: () {
+                              Get.back();
+                            },
+                            onConfirm: () async {
+                              Get.back();
+                              await _.backup();
+                            },
+                          );
                         },
                         child: Container(
                           color: Colors.blue,
