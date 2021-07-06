@@ -8,6 +8,7 @@ class TransactionCard extends StatelessWidget {
   String description;
   DateTime time;
   VoidCallback onTap;
+  String type;
   NumberFormat numberFormat = NumberFormat.currency(
     locale: "en_IN",
     symbol: "₹",
@@ -19,6 +20,7 @@ class TransactionCard extends StatelessWidget {
     required this.time,
     required this.description,
     required this.onTap,
+    required this.type,
   });
 
   @override
@@ -48,6 +50,10 @@ class TransactionCard extends StatelessWidget {
                     style: MMTheme.ts1,
                   ),
                   Text(
+                    type,
+                    style: MMTheme.ts3,
+                  ),
+                  Text(
                     DateFormat('yyyy-MM-dd kk:mm').format(time),
                     style: MMTheme.ts3,
                   ),
@@ -59,7 +65,10 @@ class TransactionCard extends StatelessWidget {
               Container(
                 child: Text(
                   numberFormat.format(amount),
-                  style: MMTheme.ts1.copyWith(color: Colors.blue, fontWeight: FontWeight.w600,),
+                  style: MMTheme.ts1.copyWith(
+                    color: Colors.blue,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
             ],

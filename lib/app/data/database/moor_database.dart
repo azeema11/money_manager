@@ -2,12 +2,13 @@ import 'package:money_manager/app/data/models/borrow.dart';
 import 'package:money_manager/app/data/models/expense.dart';
 import 'package:money_manager/app/data/models/income.dart';
 import 'package:money_manager/app/data/models/lend.dart';
+import 'package:money_manager/app/data/transaction_types/expense_types.dart';
+import 'package:money_manager/app/data/transaction_types/income_types.dart';
 import 'package:moor_flutter/moor_flutter.dart';
 part 'moor_database.g.dart';
 
 @UseMoor(tables: [Expense, Income, Lend, Borrow])
 class AppDatabase extends _$AppDatabase {
-  
   AppDatabase()
       : super((FlutterQueryExecutor.inDatabaseFolder(
           path: 'db.sqlite',
@@ -15,15 +16,15 @@ class AppDatabase extends _$AppDatabase {
         )));
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(onCreate: (Migrator m) {
         return m.createAll();
       }, onUpgrade: (Migrator m, int from, int to) async {
-        if (from == 1) {
-          await m.addColumn(lend, lend.status);
-          await m.addColumn(borrow, borrow.status);
+        if (from == 2) {
+          await customStatement('''ALTER TABLE income ADD type TEXT NOT NULL DEFAULT '${IncomeTypeName[IncomeTypes.allowance]}' ''');
+          await customStatement('''ALTER TABLE expense ADD type TEXT NOT NULL DEFAULT '${ExpenseTypeName[ExpenseTypes.food]}' ''');
         }
       });
 
@@ -54,7 +55,8 @@ class AppDatabase extends _$AppDatabase {
   Stream<List<ExpenseData>> getWeekExpense(
           DateTime weekend, DateTime weekstart) =>
       (select(expense)
-            ..where((tbl) => tbl.time.isSmallerThanValue(weekend.add(Duration(days: 1))))
+            ..where((tbl) =>
+                tbl.time.isSmallerThanValue(weekend.add(Duration(days: 1))))
             ..where((tbl) => tbl.time.isBiggerOrEqualValue(weekstart))
             ..orderBy([
               (u) => OrderingTerm(expression: u.time, mode: OrderingMode.desc)
@@ -63,7 +65,8 @@ class AppDatabase extends _$AppDatabase {
   Stream<List<IncomeData>> getWeekIncome(
           DateTime weekend, DateTime weekstart) =>
       (select(income)
-            ..where((tbl) => tbl.time.isSmallerThanValue(weekend.add(Duration(days: 1))))
+            ..where((tbl) =>
+                tbl.time.isSmallerThanValue(weekend.add(Duration(days: 1))))
             ..where((tbl) => tbl.time.isBiggerOrEqualValue(weekstart))
             ..orderBy([
               (u) => OrderingTerm(expression: u.time, mode: OrderingMode.desc)
@@ -72,13 +75,15 @@ class AppDatabase extends _$AppDatabase {
 
   Stream<List<ExpenseData>> getDayExpense(DateTime date) => (select(expense)
         ..where((tbl) => tbl.time.isBiggerOrEqualValue(date))
-        ..where((tbl) => tbl.time.isSmallerThanValue(date.add(Duration(days: 1))))
+        ..where(
+            (tbl) => tbl.time.isSmallerThanValue(date.add(Duration(days: 1))))
         ..orderBy(
             [(u) => OrderingTerm(expression: u.time, mode: OrderingMode.desc)]))
       .watch();
   Stream<List<IncomeData>> getDayIncome(DateTime date) => (select(income)
         ..where((tbl) => tbl.time.isBiggerOrEqualValue(date))
-        ..where((tbl) => tbl.time.isSmallerThanValue(date.add(Duration(days: 1))))
+        ..where(
+            (tbl) => tbl.time.isSmallerThanValue(date.add(Duration(days: 1))))
         ..orderBy(
             [(u) => OrderingTerm(expression: u.time, mode: OrderingMode.desc)]))
       .watch();
