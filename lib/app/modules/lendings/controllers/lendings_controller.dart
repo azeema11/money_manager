@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:money_manager/app/controllers/floating_action_controller.dart';
 import 'package:money_manager/app/data/database/moor_database.dart';
 import 'package:async/async.dart';
 import 'package:money_manager/app/modules/home/controllers/home_controller.dart';
 
 class LendingsController extends GetxController {
   HomeController homeController = Get.find<HomeController>();
+  FloatingActionController floatingActionController = Get.find<FloatingActionController>();
   late AppDatabase database;
   final formKey = GlobalKey<FormState>();
   final FocusNode f1 = new FocusNode();
@@ -25,6 +27,8 @@ class LendingsController extends GetxController {
 
   void onTapLending(int index) {
     lendingIndex = index;
+    floatingActionController.showFloatingAction = true;
+    floatingActionController.update();
     update();
   }
 
@@ -35,6 +39,8 @@ class LendingsController extends GetxController {
     } else {
       status = true;
     }
+    floatingActionController.showFloatingAction = true;
+    floatingActionController.update();
     update();
   }
 

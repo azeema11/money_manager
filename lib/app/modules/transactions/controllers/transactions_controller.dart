@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:money_manager/app/controllers/floating_action_controller.dart';
 import 'package:money_manager/app/data/database/moor_database.dart';
 import 'package:async/async.dart';
 import 'package:money_manager/app/modules/home/controllers/home_controller.dart';
 
 class TransactionsController extends GetxController {
   HomeController homeController = Get.find<HomeController>();
+  FloatingActionController floatingActionController = Get.find<FloatingActionController>();
   int transactionIndex = 0;
   int typeIndex = 0;
   late AppDatabase database;
@@ -32,6 +34,8 @@ class TransactionsController extends GetxController {
 
   void onTap(int index) {
     transactionIndex = index;
+    floatingActionController.showFloatingAction = true;
+    floatingActionController.update();
     update();
   }
 
@@ -39,6 +43,8 @@ class TransactionsController extends GetxController {
     typeIndex = index;
     selectedDate =
         DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+    floatingActionController.showFloatingAction = true;
+    floatingActionController.update();
     update();
   }
 

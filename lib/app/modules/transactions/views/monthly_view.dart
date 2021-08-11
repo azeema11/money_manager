@@ -58,6 +58,7 @@ class MonthlyView extends StatelessWidget {
                 else
                   Expanded(
                     child: ListView.builder(
+                      controller: transactionsController.floatingActionController.scrollController,
                       itemCount: transactionsController.transactionIndex == 0
                           ? transactionsController.expenseData.length
                           : transactionsController.incomeData.length,

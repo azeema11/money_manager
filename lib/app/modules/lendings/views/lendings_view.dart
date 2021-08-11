@@ -4,6 +4,7 @@ import 'package:form_field_validator/form_field_validator.dart';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:money_manager/app/controllers/floating_action_controller.dart';
 import 'package:money_manager/app/data/database/moor_database.dart';
 import 'package:money_manager/app/theme/mmtheme.dart';
 import 'package:money_manager/app/widgets/lending_card.dart';
@@ -156,7 +157,15 @@ class LendingsView extends GetView<LendingsController> {
             ),
           ],
         ),
-        floatingActionButton: LendingFloatingAction(),
+        floatingActionButton: GetBuilder<FloatingActionController>(
+          builder: (_) {
+            return AnimatedOpacity(
+              opacity: _.showFloatingAction? 1 : 0, 
+              duration: Duration(milliseconds: 150),
+              child: LendingFloatingAction(),
+            );
+          },
+        ),
       );
     });
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:money_manager/app/controllers/floating_action_controller.dart';
 import 'package:money_manager/app/modules/transactions/views/daily_view.dart';
 import 'package:money_manager/app/modules/transactions/views/monthly_view.dart';
 import 'package:money_manager/app/modules/transactions/views/weekly_view.dart';
@@ -69,7 +70,15 @@ class TransactionsView extends GetView<TransactionsController> {
             ],
           ),
         ),
-        floatingActionButton: TransactionFloatingAction(),
+        floatingActionButton: GetBuilder<FloatingActionController>(
+          builder: (_) {
+            return AnimatedOpacity(
+              opacity: _.showFloatingAction? 1 : 0, 
+              duration: Duration(milliseconds: 150),
+              child: TransactionFloatingAction(),
+            );
+          },
+        ),
       );
     });
   }
