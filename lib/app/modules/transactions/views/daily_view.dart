@@ -19,39 +19,8 @@ class DailyView extends StatelessWidget {
             return Loading();
           } else {
             transactionsController.sort(snapshot.data);
-            transactionsController.daterange();
             return Column(
               children: [
-                Container(
-                  height: 40.0,
-                  width: Get.width,
-                  child: Card(
-                    margin: EdgeInsets.zero,
-                    shape: Border.fromBorderSide(BorderSide.none),
-                    child: ListView.builder(
-                      itemCount: transactionsController.dates.length,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        return TextButton(
-                          onPressed: () {
-                            transactionsController.selectedDate =
-                                transactionsController.dates[index];
-                            transactionsController.update();
-                          },
-                          child: Container(
-                            child: Text(
-                              "${transactionsController.dates[index].day} ${DateFormat("EE").format(transactionsController.dates[index])}",
-                              style: transactionsController.dates[index] ==
-                                      transactionsController.selectedDate
-                                  ? MMTheme.ts4.copyWith(color: Colors.blue)
-                                  : MMTheme.ts4.copyWith(color: Colors.black),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
                 BottomNavigationBar(
                   currentIndex: transactionsController.transactionIndex,
                   iconSize: 0,
