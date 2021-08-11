@@ -31,7 +31,7 @@ class LendingsView extends GetView<LendingsController> {
                   builder: (context, AsyncSnapshot snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Loading();
-                    } else {
+                     } else {
                       _.sort(snapshot.data);
                       return Column(
                         children: [
@@ -40,7 +40,8 @@ class LendingsView extends GetView<LendingsController> {
                             iconSize: 0,
                             selectedFontSize: 18,
                             unselectedFontSize: 16,
-                            type: BottomNavigationBarType.fixed,
+                            type: 
+               BottomNavigationBarType.fixed,
                             onTap: _.onTapLending,
                             items: [
                               BottomNavigationBarItem(
@@ -97,7 +98,7 @@ class LendingsView extends GetView<LendingsController> {
                                     status: _.lendingIndex == 0
                                         ? _.lendData[index].status
                                         : _.borrowData[index].status,
-                                    onTap: () async {
+                                    onSwipeRight: () async {
                                       if (_.lendingIndex == 0) {
                                         LendData newLend = LendData(
                                             id: _.lendData[index].id,
@@ -122,6 +123,19 @@ class LendingsView extends GetView<LendingsController> {
                                         _.update();
                                       }
                                     },
+                                    onSwipeLeft: () async {
+                                      if (_.lendingIndex == 0) {
+                                        await _.database
+                                            .deleteLend(_
+                                                .lendData[index]);
+                                        _.update();
+                                      } else {
+                                        await _.database
+                                            .deleteBorrow(
+                                                _.borrowData[index]);
+                                        _.update();
+                                      }
+                                    },
                                     amount: _.lendingIndex == 0
                                         ? _.lendData[index].amount
                                         : _.borrowData[index].amount,
@@ -130,7 +144,7 @@ class LendingsView extends GetView<LendingsController> {
                                         : _.borrowData[index].time,
                                     description: _.lendingIndex == 0
                                         ? _.lendData[index].description
-                                        : _.borrowData[index].description,
+                                        : _.borrowData[index].description, 
                                   );
                                 },
                               ),
