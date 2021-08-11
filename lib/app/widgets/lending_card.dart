@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:money_manager/app/theme/mmtheme.dart';
 
@@ -33,8 +34,26 @@ class LendingCard extends StatelessWidget {
           size: 28,
         ),
       ),
-      onDismissed: (direction) {
-        onTap();
+      confirmDismiss: (direction) async {
+        late bool confirm;
+        await Get.defaultDialog(
+          title: "Confirm " + (status? "Pending" : "Complete"),
+          titleStyle: MMTheme.ts3,
+          middleText: "Do you want to mark data as " + (status? "Pending?" : "Complete?"),
+          textCancel: "Back",
+          textConfirm: "Confirm",
+          confirmTextColor: Colors.white,
+          onCancel: () {
+            confirm = false;
+            Get.back();
+          },
+          onConfirm: () {
+            Get.back();
+            confirm = true;
+            onTap();
+          },
+        );
+        return confirm;
       },
       key: Key(id.toString()),
       child: Card(

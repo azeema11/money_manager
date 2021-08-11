@@ -5,7 +5,11 @@ import 'package:money_manager/app/modules/transactions/views/daily_view.dart';
 import 'package:money_manager/app/modules/transactions/views/monthly_view.dart';
 import 'package:money_manager/app/modules/transactions/views/weekly_view.dart';
 import 'package:money_manager/app/modules/transactions/views/yearly_view.dart';
+import 'package:money_manager/app/widgets/date_list.dart';
+import 'package:money_manager/app/widgets/month_list.dart';
 import 'package:money_manager/app/widgets/transaction_floating_action.dart';
+import 'package:money_manager/app/widgets/week_list.dart';
+import 'package:money_manager/app/widgets/year_list.dart';
 
 import '../controllers/transactions_controller.dart';
 
@@ -48,6 +52,12 @@ class TransactionsView extends GetView<TransactionsController> {
                   ),
                 ],
               ),
+              [
+                DateList(),
+                WeekList(),
+                MonthList(),
+                YearList(),
+              ][_.typeIndex],
               Expanded(
                 child: [
                   DailyView(),

@@ -6,6 +6,8 @@ import 'package:money_manager/app/modules/home/bindings/home_binding.dart';
 import 'package:money_manager/app/modules/home/views/home_view.dart';
 import 'package:money_manager/app/modules/lendings/bindings/lendings_binding.dart';
 import 'package:money_manager/app/modules/lendings/views/lendings_view.dart';
+import 'package:money_manager/app/modules/statistics/bindings/statistics_binding.dart';
+import 'package:money_manager/app/modules/statistics/views/statistics_view.dart';
 import 'package:money_manager/app/modules/transactions/bindings/transactions_binding.dart';
 import 'package:money_manager/app/modules/transactions/views/transactions_view.dart';
 
@@ -20,7 +22,12 @@ class AppPages {
     GetPage(
       name: _Paths.HOME,
       page: () => HomeView(),
-      bindings: [HomeBinding(), TransactionsBinding(), LendingsBinding(), BackupRestoreBinding()],
+      bindings: [
+        HomeBinding(),
+        TransactionsBinding(),
+        LendingsBinding(),
+        BackupRestoreBinding()
+      ],
     ),
     GetPage(
       name: _Paths.TRANSACTIONS,
@@ -36,6 +43,11 @@ class AppPages {
       name: _Paths.BACKUP_RESTORE,
       page: () => BackupRestoreView(),
       binding: BackupRestoreBinding(),
+    ),
+    GetPage(
+      name: _Paths.STATISTICS,
+      page: () => StatisticsView(),
+      binding: StatisticsBinding(),
     ),
   ];
 }

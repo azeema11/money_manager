@@ -8,6 +8,7 @@ abstract class Routes {
   static const TRANSACTIONS = _Paths.TRANSACTIONS;
   static const LENDINGS = _Paths.LENDINGS;
   static const BACKUP_RESTORE = _Paths.BACKUP_RESTORE;
+  static const STATISTICS = _Paths.STATISTICS;
 }
 
 abstract class _Paths {
@@ -15,4 +16,5 @@ abstract class _Paths {
   static const TRANSACTIONS = '/transactions';
   static const LENDINGS = '/lendings';
   static const BACKUP_RESTORE = '/backup-restore';
+  static const STATISTICS = '/statistics';
 }

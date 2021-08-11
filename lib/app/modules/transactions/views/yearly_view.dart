@@ -19,39 +19,8 @@ class YearlyView extends StatelessWidget {
             return Loading();
           } else {
             transactionsController.sort(snapshot.data);
-            transactionsController.yearrange();
             return Column(
               children: [
-                Container(
-                  height: 40.0,
-                  width: Get.width,
-                  child: Card(
-                    margin: EdgeInsets.zero,
-                    shape: Border.fromBorderSide(BorderSide.none),
-                    child: ListView.builder(
-                      itemCount: transactionsController.years.length,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        return TextButton(
-                          onPressed: () {
-                            transactionsController.selectedDate =
-                                transactionsController.years[index];
-                            transactionsController.update();
-                          },
-                          child: Container(
-                            child: Text(
-                              "${transactionsController.years[index].year}",
-                              style: transactionsController.years[index] ==
-                                      transactionsController.selectedDate
-                                  ? MMTheme.ts4.copyWith(color: Colors.blue)
-                                  : MMTheme.ts4.copyWith(color: Colors.black),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
                 TransactionReport(
                   expense: transactionsController
                       .total(transactionsController.expenseData),

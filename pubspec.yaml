@@ -1,5 +1,5 @@
 name: money_manager
-version: 1.0.1+1
+version: 1.0.2+1
 publish_to: none
 description: A new Flutter project.
 environment:
@@ -11,6 +11,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   custom_navigation_bar: ^0.8.2
   file_picker: ^3.0.3
+  fl_chart: ^0.36.2
   flutter_rounded_date_picker: ^2.0.2
   flutter_speed_dial: ^3.0.5
   font_awesome_flutter: ^9.1.0
