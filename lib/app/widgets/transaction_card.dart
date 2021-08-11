@@ -35,7 +35,7 @@ class TransactionCard extends StatelessWidget {
         ),
       ),
       confirmDismiss: (direction) async {
-        late bool confirm;
+        bool confirm = false;
         await Get.defaultDialog(
           title: "Confirm Delete",
           titleStyle: MMTheme.ts3,
@@ -44,7 +44,6 @@ class TransactionCard extends StatelessWidget {
           textConfirm: "Confirm",
           confirmTextColor: Colors.white,
           onCancel: () {
-            confirm = false;
             Get.back();
           },
           onConfirm: () {

@@ -8,7 +8,8 @@ class LendingCard extends StatelessWidget {
   double amount;
   String description;
   DateTime time;
-  VoidCallback onTap;
+  VoidCallback onSwipeRight;
+  VoidCallback onSwipeLeft;
   bool status;
   NumberFormat numberFormat = NumberFormat.currency(
     locale: "en_IN",
@@ -20,7 +21,8 @@ class LendingCard extends StatelessWidget {
     required this.amount,
     required this.time,
     required this.description,
-    required this.onTap,
+    required this.onSwipeRight,
+    required this.onSwipeLeft,
     required this.status,
   });
 
@@ -34,25 +36,50 @@ class LendingCard extends StatelessWidget {
           size: 28,
         ),
       ),
+      secondaryBackground: Container(
+        color: Colors.red,
+        child: Icon(
+          Icons.delete,
+          size: 28,
+        ),
+      ),
       confirmDismiss: (direction) async {
-        late bool confirm;
-        await Get.defaultDialog(
-          title: "Confirm " + (status? "Pending" : "Complete"),
-          titleStyle: MMTheme.ts3,
-          middleText: "Do you want to mark data as " + (status? "Pending?" : "Complete?"),
-          textCancel: "Back",
-          textConfirm: "Confirm",
-          confirmTextColor: Colors.white,
-          onCancel: () {
-            confirm = false;
-            Get.back();
-          },
-          onConfirm: () {
-            Get.back();
-            confirm = true;
-            onTap();
-          },
-        );
+        bool confirm = false;
+        if (direction == DismissDirection.startToEnd){
+          await Get.defaultDialog(
+            title: "Confirm " + (status? "Pending" : "Complete"),
+            titleStyle: MMTheme.ts3,
+            middleText: "Do you want to mark data as " + (status? "Pending?" : "Complete?"),
+            textCancel: "Back",
+            textConfirm: "Confirm",
+            confirmTextColor: Colors.white,
+            onCancel: () {
+              Get.back();
+            },
+            onConfirm: () {
+              Get.back();
+              confirm = true;
+              onSwipeRight();
+            },
+          );
+        } else {
+            await Get.defaultDialog(
+            title: "Confirm Delete",
+            titleStyle: MMTheme.ts3,
+            middleText: "Do you want to delete the data?",
+            textCancel: "Back",
+            textConfirm: "Confirm",
+            confirmTextColor: Colors.white,
+            onCancel: () {
+              Get.back();
+            },
+            onConfirm: () {
+              Get.back();
+              confirm = true;
+              onSwipeLeft();
+            },
+          );
+        }
         return confirm;
       },
       key: Key(id.toString()),
