@@ -42,8 +42,8 @@ class BackupRestore {
     final file = File(p.join(dbFolder, 'db.sqlite'));
 
     final backupFilePicked = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ["sqlite"],
+      type: FileType.any,
+      //allowedExtensions: ["sqlite"],
     );
     if (backupFilePicked != null) {
       final backupPath = backupFilePicked.files.single.path;

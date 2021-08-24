@@ -213,65 +213,33 @@ class $ExpenseTable extends Expense with TableInfo<$ExpenseTable, ExpenseData> {
   final String? _alias;
   $ExpenseTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
-  @override
-  late final GeneratedIntColumn id = _constructId();
-  GeneratedIntColumn _constructId() {
-    return GeneratedIntColumn('id', $tableName, false,
-        hasAutoIncrement: true, declaredAsPrimaryKey: true);
-  }
-
+  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
+      'id', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
   final VerificationMeta _purposeMeta = const VerificationMeta('purpose');
-  @override
-  late final GeneratedTextColumn purpose = _constructPurpose();
-  GeneratedTextColumn _constructPurpose() {
-    return GeneratedTextColumn(
-      'purpose',
-      $tableName,
-      false,
-    );
-  }
-
+  late final GeneratedColumn<String?> purpose = GeneratedColumn<String?>(
+      'purpose', aliasedName, false,
+      typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _amountMeta = const VerificationMeta('amount');
-  @override
-  late final GeneratedRealColumn amount = _constructAmount();
-  GeneratedRealColumn _constructAmount() {
-    return GeneratedRealColumn(
-      'amount',
-      $tableName,
-      false,
-    );
-  }
-
+  late final GeneratedColumn<double?> amount = GeneratedColumn<double?>(
+      'amount', aliasedName, false,
+      typeName: 'REAL', requiredDuringInsert: true);
   final VerificationMeta _timeMeta = const VerificationMeta('time');
-  @override
-  late final GeneratedDateTimeColumn time = _constructTime();
-  GeneratedDateTimeColumn _constructTime() {
-    return GeneratedDateTimeColumn(
-      'time',
-      $tableName,
-      false,
-    );
-  }
-
+  late final GeneratedColumn<DateTime?> time = GeneratedColumn<DateTime?>(
+      'time', aliasedName, false,
+      typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _typeMeta = const VerificationMeta('type');
-  @override
-  late final GeneratedTextColumn type = _constructType();
-  GeneratedTextColumn _constructType() {
-    return GeneratedTextColumn(
-      'type',
-      $tableName,
-      false,
-    );
-  }
-
+  late final GeneratedColumn<String?> type = GeneratedColumn<String?>(
+      'type', aliasedName, false,
+      typeName: 'TEXT', requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns => [id, purpose, amount, time, type];
   @override
-  $ExpenseTable get asDslTable => this;
+  String get aliasedName => _alias ?? 'expense';
   @override
-  String get $tableName => _alias ?? 'expense';
-  @override
-  final String actualTableName = 'expense';
+  String get actualTableName => 'expense';
   @override
   VerificationContext validateIntegrity(Insertable<ExpenseData> instance,
       {bool isInserting = false}) {
@@ -527,65 +495,33 @@ class $IncomeTable extends Income with TableInfo<$IncomeTable, IncomeData> {
   final String? _alias;
   $IncomeTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
-  @override
-  late final GeneratedIntColumn id = _constructId();
-  GeneratedIntColumn _constructId() {
-    return GeneratedIntColumn('id', $tableName, false,
-        hasAutoIncrement: true, declaredAsPrimaryKey: true);
-  }
-
+  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
+      'id', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
   final VerificationMeta _sourceMeta = const VerificationMeta('source');
-  @override
-  late final GeneratedTextColumn source = _constructSource();
-  GeneratedTextColumn _constructSource() {
-    return GeneratedTextColumn(
-      'source',
-      $tableName,
-      false,
-    );
-  }
-
+  late final GeneratedColumn<String?> source = GeneratedColumn<String?>(
+      'source', aliasedName, false,
+      typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _amountMeta = const VerificationMeta('amount');
-  @override
-  late final GeneratedRealColumn amount = _constructAmount();
-  GeneratedRealColumn _constructAmount() {
-    return GeneratedRealColumn(
-      'amount',
-      $tableName,
-      false,
-    );
-  }
-
+  late final GeneratedColumn<double?> amount = GeneratedColumn<double?>(
+      'amount', aliasedName, false,
+      typeName: 'REAL', requiredDuringInsert: true);
   final VerificationMeta _timeMeta = const VerificationMeta('time');
-  @override
-  late final GeneratedDateTimeColumn time = _constructTime();
-  GeneratedDateTimeColumn _constructTime() {
-    return GeneratedDateTimeColumn(
-      'time',
-      $tableName,
-      false,
-    );
-  }
-
+  late final GeneratedColumn<DateTime?> time = GeneratedColumn<DateTime?>(
+      'time', aliasedName, false,
+      typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _typeMeta = const VerificationMeta('type');
-  @override
-  late final GeneratedTextColumn type = _constructType();
-  GeneratedTextColumn _constructType() {
-    return GeneratedTextColumn(
-      'type',
-      $tableName,
-      false,
-    );
-  }
-
+  late final GeneratedColumn<String?> type = GeneratedColumn<String?>(
+      'type', aliasedName, false,
+      typeName: 'TEXT', requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns => [id, source, amount, time, type];
   @override
-  $IncomeTable get asDslTable => this;
+  String get aliasedName => _alias ?? 'income';
   @override
-  String get $tableName => _alias ?? 'income';
-  @override
-  final String actualTableName = 'income';
+  String get actualTableName => 'income';
   @override
   VerificationContext validateIntegrity(Insertable<IncomeData> instance,
       {bool isInserting = false}) {
@@ -840,63 +776,37 @@ class $LendTable extends Lend with TableInfo<$LendTable, LendData> {
   final String? _alias;
   $LendTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
-  @override
-  late final GeneratedIntColumn id = _constructId();
-  GeneratedIntColumn _constructId() {
-    return GeneratedIntColumn('id', $tableName, false,
-        hasAutoIncrement: true, declaredAsPrimaryKey: true);
-  }
-
+  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
+      'id', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
   final VerificationMeta _descriptionMeta =
       const VerificationMeta('description');
-  @override
-  late final GeneratedTextColumn description = _constructDescription();
-  GeneratedTextColumn _constructDescription() {
-    return GeneratedTextColumn(
-      'description',
-      $tableName,
-      false,
-    );
-  }
-
+  late final GeneratedColumn<String?> description = GeneratedColumn<String?>(
+      'description', aliasedName, false,
+      typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _amountMeta = const VerificationMeta('amount');
-  @override
-  late final GeneratedRealColumn amount = _constructAmount();
-  GeneratedRealColumn _constructAmount() {
-    return GeneratedRealColumn(
-      'amount',
-      $tableName,
-      false,
-    );
-  }
-
+  late final GeneratedColumn<double?> amount = GeneratedColumn<double?>(
+      'amount', aliasedName, false,
+      typeName: 'REAL', requiredDuringInsert: true);
   final VerificationMeta _timeMeta = const VerificationMeta('time');
-  @override
-  late final GeneratedDateTimeColumn time = _constructTime();
-  GeneratedDateTimeColumn _constructTime() {
-    return GeneratedDateTimeColumn(
-      'time',
-      $tableName,
-      false,
-    );
-  }
-
+  late final GeneratedColumn<DateTime?> time = GeneratedColumn<DateTime?>(
+      'time', aliasedName, false,
+      typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _statusMeta = const VerificationMeta('status');
-  @override
-  late final GeneratedBoolColumn status = _constructStatus();
-  GeneratedBoolColumn _constructStatus() {
-    return GeneratedBoolColumn('status', $tableName, false,
-        defaultValue: Constant(false));
-  }
-
+  late final GeneratedColumn<bool?> status = GeneratedColumn<bool?>(
+      'status', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      defaultConstraints: 'CHECK (status IN (0, 1))',
+      defaultValue: Constant(false));
   @override
   List<GeneratedColumn> get $columns => [id, description, amount, time, status];
   @override
-  $LendTable get asDslTable => this;
+  String get aliasedName => _alias ?? 'lend';
   @override
-  String get $tableName => _alias ?? 'lend';
-  @override
-  final String actualTableName = 'lend';
+  String get actualTableName => 'lend';
   @override
   VerificationContext validateIntegrity(Insertable<LendData> instance,
       {bool isInserting = false}) {
@@ -1151,63 +1061,37 @@ class $BorrowTable extends Borrow with TableInfo<$BorrowTable, BorrowData> {
   final String? _alias;
   $BorrowTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
-  @override
-  late final GeneratedIntColumn id = _constructId();
-  GeneratedIntColumn _constructId() {
-    return GeneratedIntColumn('id', $tableName, false,
-        hasAutoIncrement: true, declaredAsPrimaryKey: true);
-  }
-
+  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
+      'id', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
   final VerificationMeta _descriptionMeta =
       const VerificationMeta('description');
-  @override
-  late final GeneratedTextColumn description = _constructDescription();
-  GeneratedTextColumn _constructDescription() {
-    return GeneratedTextColumn(
-      'description',
-      $tableName,
-      false,
-    );
-  }
-
+  late final GeneratedColumn<String?> description = GeneratedColumn<String?>(
+      'description', aliasedName, false,
+      typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _amountMeta = const VerificationMeta('amount');
-  @override
-  late final GeneratedRealColumn amount = _constructAmount();
-  GeneratedRealColumn _constructAmount() {
-    return GeneratedRealColumn(
-      'amount',
-      $tableName,
-      false,
-    );
-  }
-
+  late final GeneratedColumn<double?> amount = GeneratedColumn<double?>(
+      'amount', aliasedName, false,
+      typeName: 'REAL', requiredDuringInsert: true);
   final VerificationMeta _timeMeta = const VerificationMeta('time');
-  @override
-  late final GeneratedDateTimeColumn time = _constructTime();
-  GeneratedDateTimeColumn _constructTime() {
-    return GeneratedDateTimeColumn(
-      'time',
-      $tableName,
-      false,
-    );
-  }
-
+  late final GeneratedColumn<DateTime?> time = GeneratedColumn<DateTime?>(
+      'time', aliasedName, false,
+      typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _statusMeta = const VerificationMeta('status');
-  @override
-  late final GeneratedBoolColumn status = _constructStatus();
-  GeneratedBoolColumn _constructStatus() {
-    return GeneratedBoolColumn('status', $tableName, false,
-        defaultValue: Constant(false));
-  }
-
+  late final GeneratedColumn<bool?> status = GeneratedColumn<bool?>(
+      'status', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      defaultConstraints: 'CHECK (status IN (0, 1))',
+      defaultValue: Constant(false));
   @override
   List<GeneratedColumn> get $columns => [id, description, amount, time, status];
   @override
-  $BorrowTable get asDslTable => this;
+  String get aliasedName => _alias ?? 'borrow';
   @override
-  String get $tableName => _alias ?? 'borrow';
-  @override
-  final String actualTableName = 'borrow';
+  String get actualTableName => 'borrow';
   @override
   VerificationContext validateIntegrity(Insertable<BorrowData> instance,
       {bool isInserting = false}) {
