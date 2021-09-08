@@ -88,6 +88,7 @@ class LendingsView extends GetView<LendingsController> {
                           else
                             Expanded(
                               child: ListView.builder(
+                                controller: _.floatingActionController.scrollController,
                                 itemCount: _.lendingIndex == 0
                                     ? _.lendData.length
                                     : _.borrowData.length,
