@@ -10,11 +10,11 @@ class FloatingActionController extends GetxController {
   void onInit() {
     super.onInit();
     scrollController.addListener(() {
+      print("Hello");
       if (scrollController.position.userScrollDirection ==
           ScrollDirection.reverse) {
         showFloatingAction = false;
-      }
-      else {
+      } else {
         showFloatingAction = true;
       }
       update();
