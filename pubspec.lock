@@ -189,7 +189,7 @@ packages:
       name: dart_style
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.3"
+    version: "2.1.0"
   encrypt:
     dependency: "direct main"
     description:
@@ -636,7 +636,7 @@ packages:
       name: sqflite_common
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.1"
+    version: "2.0.1+1"
   sqlite3:
     dependency: transitive
     description:
