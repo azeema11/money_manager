@@ -68,7 +68,7 @@ class PasswordScreenView extends GetView<PasswordScreenController> {
                         title: "Confirm Password",
                         titleStyle: MMTheme.ts3,
                         middleText:
-                            "This password will be used to decrypt backed up database files\n Confirm Password?",
+                            "This password will be used to encrypt/decrypt database files on backup/restore\n Confirm Password?",
                         textCancel: "Back",
                         textConfirm: "Confirm",
                         confirmTextColor: Colors.white,
