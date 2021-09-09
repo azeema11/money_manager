@@ -3,14 +3,16 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:money_manager/app/data/encryption/encryption.dart';
 import 'package:path/path.dart' as p;
 import 'package:share_plus/share_plus.dart';
 import 'package:sqflite/sqflite.dart';
 
 class BackupRestore {
+  Encryption encryption = Encryption();
   Future backup() async {
     final dbFolder = await getDatabasesPath();
-    final file = File(p.join(dbFolder, 'db.sqlite'));
+    final dbFile = File(p.join(dbFolder, 'db.sqlite'));
 
     final Directory exportDir =
         Directory('/storage/emulated/0/Documents/Money Manager/Backup');
@@ -20,7 +22,10 @@ class BackupRestore {
       await File(backupFile).create(recursive: true);
     }
 
-    await File(backupFile).writeAsBytes(await file.readAsBytes(), flush: true);
+    await File(backupFile).writeAsBytes(
+      encryption.encrypt(await dbFile.readAsBytes()),
+      flush: true,
+    );
 
     if (await File(backupFile).exists()) {
       await Share.shareFiles(
@@ -36,10 +41,10 @@ class BackupRestore {
     );
   }
 
-  Future restore() async { 
+  Future restore() async {
     await FilePicker.platform.clearTemporaryFiles();
     final dbFolder = await getDatabasesPath();
-    final file = File(p.join(dbFolder, 'db.sqlite'));
+    final dbFile = File(p.join(dbFolder, 'db.sqlite'));
 
     final backupFilePicked = await FilePicker.platform.pickFiles(
       type: FileType.any,
@@ -50,13 +55,27 @@ class BackupRestore {
 
       if (p.extension(backupPath!) == '.sqlite') {
         final backupFile = File(backupPath);
-        await file.writeAsBytes(await backupFile.readAsBytes(), flush: true);
-        Get.snackbar(
-          "Database restored",
-          "Money Manager database restored",
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
-        );
+
+        try {
+          await dbFile.writeAsBytes(
+            encryption.decrypt(await backupFile.readAsBytes()),
+            flush: true,
+          );
+
+          Get.snackbar(
+            "Database restored",
+            "Money Manager database restored",
+            backgroundColor: Colors.green,
+            colorText: Colors.white,
+          );
+        } catch (e) {
+          Get.snackbar(
+            "Database restore failed!",
+            "Money Manager database restore failed",
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+          );
+        }
       } else {
         Get.snackbar(
           "Invalid file",
