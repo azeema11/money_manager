@@ -34,9 +34,9 @@ class Encryption {
   String passwordToKey(String password) {
     int i = 0;
     String key = 'money_manager';
-    while (key.length != 32) {
+    while (key.length < 32) {
       key = key + password[i++];
-      if (i == password.length) {
+      if (i == password.length && key.length < 32) {
         key = key + '_';
         i = 0;
       }
