@@ -65,7 +65,6 @@ class TransactionsController extends GetxController {
       )))
         i
     ];
-    print(dates);
   }
 
   void weekrange() {
@@ -78,7 +77,6 @@ class TransactionsController extends GetxController {
       )))
         [i, i.subtract(Duration(days: i.weekday - 1))]
     ];
-    print(weeks);
   }
 
   void monthrange() {
@@ -89,7 +87,6 @@ class TransactionsController extends GetxController {
           i = DateTime(i.year, i.month - 1, i.day))
         i
     ];
-    print(months);
   }
 
   void yearrange() {
@@ -100,7 +97,6 @@ class TransactionsController extends GetxController {
           i = DateTime(i.year - 1, i.month, i.day))
         i
     ];
-    print(years);
   }
 
   double total(List list) {

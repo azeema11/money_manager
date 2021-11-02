@@ -42,16 +42,12 @@ class PasswordScreenView extends GetView<PasswordScreenController> {
                 validator: (value) {
                   if (value == null || value == "") {
                     _.validate = false;
-                    print(_.validate);
                     return "No Password entered";
                   } else if (value.length < 5) {
                     _.validate = false;
-                    print(_.validate);
                     return "Password must be at least 5 characters";
                   } else {
                     _.validate = true;
-                    print(_.validate);
-                    print("Password Sufficient");
                   }
                 },
               ),
