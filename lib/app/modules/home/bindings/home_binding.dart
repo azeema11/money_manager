@@ -9,6 +9,8 @@ class HomeBinding extends Bindings {
     Get.lazyPut<HomeController>(
       () => HomeController(),
     );
-    Get.put<FloatingActionController>(FloatingActionController(),);
+    Get.lazyPut<FloatingActionController>(
+      () => FloatingActionController(),
+    );
   }
 }

@@ -4,12 +4,15 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:money_manager/app/data/encryption/encryption.dart';
+import 'package:money_manager/app/modules/home/controllers/home_controller.dart';
 import 'package:path/path.dart' as p;
 import 'package:share_plus/share_plus.dart';
 import 'package:sqflite/sqflite.dart';
 
 class BackupRestore {
+  late HomeController homeController;
   Encryption encryption = Encryption();
+
   Future backup() async {
     final dbFolder = await getDatabasesPath();
     final dbFile = File(p.join(dbFolder, 'db.sqlite'));
@@ -68,6 +71,10 @@ class BackupRestore {
             backgroundColor: Colors.green,
             colorText: Colors.white,
           );
+          homeController = Get.find<HomeController>();
+          await homeController.database.close();
+          Get.reset();
+          Get.rootController.restartApp();
         } catch (e) {
           Get.snackbar(
             "Database restore failed!",

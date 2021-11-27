@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
-import 'package:money_manager/app/modules/lendings/controllers/lendings_controller.dart';
-import 'package:money_manager/app/theme/mm_text_style.dart';
 import 'package:intl/intl.dart';
 import 'package:money_manager/app/data/database/moor_database.dart';
-import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
-import 'package:form_field_validator/form_field_validator.dart';
+import 'package:money_manager/app/modules/planner/controllers/planner_controller.dart';
+import 'package:money_manager/app/theme/mm_text_style.dart';
 
-class LendingFloatingAction extends StatelessWidget {
-  final LendingsController lendingsController = Get.find<LendingsController>();
+class PlannerFloatingAction extends StatelessWidget {
+  final PlannerController plannerController = Get.find<PlannerController>();
 
   @override
   Widget build(BuildContext context) {
@@ -20,35 +20,34 @@ class LendingFloatingAction extends StatelessWidget {
       children: [
         SpeedDialChild(
           child: Icon(
-            Icons.arrow_downward,
+            Icons.article,
             color: Colors.green,
           ),
-          label: "New Borrow",
+          label: "New Plan",
           labelStyle: MMTextStyle.ts4.copyWith(color: Colors.white),
           onTap: () async {
-            late double amount;
-            late String description;
+            late int amount;
+            late String title;
             Color dateColor = Colors.black;
             DateTime date = DateTime(0, 0, 0);
             await Get.bottomSheet(
               Container(
-                height: Get.height / 2.7,
+                height: Get.height / 2.1,
                 padding: EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 10.0),
                 color: Colors.white,
                 child: Form(
-                  key: lendingsController.formKey,
+                  key: plannerController.formKey,
                   child: StatefulBuilder(builder: (context, setModalState) {
                     return Column(
                       children: [
                         Container(
                           child: TextFormField(
                             textCapitalization: TextCapitalization.sentences,
-                            focusNode: lendingsController.f1,
                             validator: RequiredValidator(
-                              errorText: "Enter Description",
+                              errorText: "Enter Plan Title",
                             ),
                             decoration: InputDecoration(
-                              labelText: "Description",
+                              labelText: "Plan title",
                               focusColor: Colors.blue,
                               border: OutlineInputBorder(
                                 borderSide: BorderSide(
@@ -67,7 +66,7 @@ class LendingFloatingAction extends StatelessWidget {
                               ),
                             ),
                             onChanged: (value) {
-                              description = value;
+                              title = value;
                             },
                           ),
                         ),
@@ -77,12 +76,11 @@ class LendingFloatingAction extends StatelessWidget {
                         Container(
                           child: TextFormField(
                             keyboardType: TextInputType.number,
-                            focusNode: lendingsController.f2,
                             validator: RequiredValidator(
-                              errorText: "Enter Amount",
+                              errorText: "Enter Allocation",
                             ),
                             decoration: InputDecoration(
-                              labelText: 'Amount',
+                              labelText: 'Allocation',
                               focusColor: Colors.blue,
                               border: OutlineInputBorder(
                                 borderSide: BorderSide(
@@ -101,9 +99,12 @@ class LendingFloatingAction extends StatelessWidget {
                               ),
                             ),
                             onChanged: (value) {
-                              amount = double.parse(value);
+                              amount = value != "" ? int.parse(value) : 0;
                             },
                           ),
+                        ),
+                        SizedBox(
+                          height: 15.0,
                         ),
                         Container(
                           child: Row(
@@ -157,26 +158,26 @@ class LendingFloatingAction extends StatelessWidget {
                           height: 40.0,
                           child: TextButton(
                             onPressed: () async {
-                              if (lendingsController.formKey.currentState!
+                              if (plannerController.formKey.currentState!
                                       .validate() &&
                                   date != DateTime(0, 0, 0)) {
                                 dateColor = Colors.black;
                                 setModalState(() {});
-                                await lendingsController.database
-                                    .insertNewBorrow(BorrowCompanion.insert(
-                                  amount: amount,
+                                await plannerController.database
+                                    .insertNewPlan(PlanCompanion.insert(
                                   time: date,
-                                  description: description,
+                                  allocation: amount,
+                                  title: title,
                                 ));
                                 Get.back();
-                                lendingsController.update();
+                                plannerController.update();
                               } else if (date == DateTime(0, 0, 0)) {
                                 dateColor = Colors.red;
                                 setModalState(() {});
                               }
                             },
                             child: Text(
-                              "Add Borrow",
+                              "Add Plan",
                               style:
                                   MMTextStyle.ts4.copyWith(color: Colors.white),
                             ),
@@ -187,35 +188,36 @@ class LendingFloatingAction extends StatelessWidget {
                   }),
                 ),
               ),
+              isScrollControlled: true,
             );
           },
         ),
         SpeedDialChild(
           child: Icon(
-            Icons.arrow_upward,
+            Icons.money,
             color: Colors.red,
           ),
-          label: "New Lend",
+          label: "New Spend",
           labelStyle: MMTextStyle.ts4.copyWith(color: Colors.white),
           onTap: () async {
-            late double amount;
+            late String plan;
+            late int amount;
             late String description;
             Color dateColor = Colors.black;
             DateTime date = DateTime(0, 0, 0);
             await Get.bottomSheet(
               Container(
-                height: Get.height / 2.7,
+                height: Get.height / 2.1,
                 padding: EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 10.0),
                 color: Colors.white,
                 child: Form(
-                  key: lendingsController.formKey,
+                  key: plannerController.formKey,
                   child: StatefulBuilder(builder: (context, setModalState) {
                     return Column(
                       children: [
                         Container(
                           child: TextFormField(
                             textCapitalization: TextCapitalization.sentences,
-                            focusNode: lendingsController.f1,
                             validator: RequiredValidator(
                               errorText: "Enter Description",
                             ),
@@ -249,7 +251,6 @@ class LendingFloatingAction extends StatelessWidget {
                         Container(
                           child: TextFormField(
                             keyboardType: TextInputType.number,
-                            focusNode: lendingsController.f2,
                             validator: RequiredValidator(
                               errorText: "Enter Amount",
                             ),
@@ -273,7 +274,53 @@ class LendingFloatingAction extends StatelessWidget {
                               ),
                             ),
                             onChanged: (value) {
-                              amount = double.parse(value);
+                              amount = value != "" ? int.parse(value) : 0;
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          height: 15.0,
+                        ),
+                        Container(
+                          child: DropdownButtonFormField<String>(
+                            items: List.generate(
+                              plannerController.plans.length,
+                              (int index) => DropdownMenuItem(
+                                value: plannerController.plans[index].title,
+                                child: Text(
+                                  plannerController.plans[index].title,
+                                ),
+                              ),
+                            ),
+                            decoration: InputDecoration(
+                              labelText: 'Plan Type',
+                              focusColor: Colors.blue,
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 3.0,
+                                ),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(17.0)),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.blue,
+                                  width: 3.0,
+                                ),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(17.0)),
+                              ),
+                            ),
+                            onChanged: (String? newValue) {
+                              if (newValue != null) {
+                                plan = newValue;
+                              }
+                              setModalState(() {});
+                            },
+                            validator: (String? value) {
+                              if (value == null) {
+                                return "Select type";
+                              }
                             },
                           ),
                         ),
@@ -329,26 +376,28 @@ class LendingFloatingAction extends StatelessWidget {
                           height: 40.0,
                           child: TextButton(
                             onPressed: () async {
-                              if (lendingsController.formKey.currentState!
+                              if (plannerController.formKey.currentState!
                                       .validate() &&
                                   date != DateTime(0, 0, 0)) {
                                 dateColor = Colors.black;
                                 setModalState(() {});
-                                await lendingsController.database
-                                    .insertNewLend(LendCompanion.insert(
+                                await plannerController.database
+                                    .insertNewPlanSpends(
+                                        PlanSpendsCompanion.insert(
+                                  description: description,
                                   amount: amount,
                                   time: date,
-                                  description: description,
+                                  plan: plan,
                                 ));
                                 Get.back();
-                                lendingsController.update();
+                                plannerController.update();
                               } else if (date == DateTime(0, 0, 0)) {
                                 dateColor = Colors.red;
                                 setModalState(() {});
                               }
                             },
                             child: Text(
-                              "Add Lend",
+                              "Add Spend",
                               style:
                                   MMTextStyle.ts4.copyWith(color: Colors.white),
                             ),
@@ -359,6 +408,7 @@ class LendingFloatingAction extends StatelessWidget {
                   }),
                 ),
               ),
+              isScrollControlled: true,
             );
           },
         ),

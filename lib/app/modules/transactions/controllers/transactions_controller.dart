@@ -7,7 +7,8 @@ import 'package:money_manager/app/modules/home/controllers/home_controller.dart'
 
 class TransactionsController extends GetxController {
   HomeController homeController = Get.find<HomeController>();
-  FloatingActionController floatingActionController = Get.find<FloatingActionController>();
+  FloatingActionController floatingActionController =
+      Get.find<FloatingActionController>();
   int transactionIndex = 0;
   int typeIndex = 0;
   late AppDatabase database;
@@ -24,7 +25,7 @@ class TransactionsController extends GetxController {
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
   DateTime weekend =
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
-  DateTime weekstart =
+  DateTime weekStart =
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)
           .subtract(Duration(
               days: DateTime(DateTime.now().year, DateTime.now().month,
@@ -123,8 +124,8 @@ class TransactionsController extends GetxController {
 
   Stream<List> getWeeklyTransactions() {
     return StreamZip([
-      database.getWeekExpense(weekend, weekstart),
-      database.getWeekIncome(weekend, weekstart)
+      database.getWeekExpense(weekend, weekStart),
+      database.getWeekIncome(weekend, weekStart)
     ]);
   }
 

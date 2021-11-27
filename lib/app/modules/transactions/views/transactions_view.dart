@@ -17,69 +17,92 @@ import '../controllers/transactions_controller.dart';
 class TransactionsView extends GetView<TransactionsController> {
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<TransactionsController>(builder: (_) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            _.transactionIndex == 0 ? "Expense" : "Income",
+    return GetBuilder<TransactionsController>(
+      builder: (_) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(
+              _.transactionIndex == 0 ? "Expense" : "Income",
+            ),
           ),
-        ),
-        body: Container(
-          child: Column(
-            children: [
-              BottomNavigationBar(
-                currentIndex: _.typeIndex,
-                onTap: _.changetype,
-                type: BottomNavigationBarType.fixed,
-                iconSize: 0,
-                selectedFontSize: 18,
-                unselectedFontSize: 16,
-                items: [
-                  BottomNavigationBarItem(
-                    icon: Icon(null),
-                    label: "Daily",
+          body: Container(
+            child: Column(
+              children: [
+                BottomNavigationBar(
+                  currentIndex: _.typeIndex,
+                  onTap: _.changetype,
+                  type: BottomNavigationBarType.fixed,
+                  iconSize: 0,
+                  selectedFontSize: 17,
+                  unselectedFontSize: 15,
+                  items: [
+                    BottomNavigationBarItem(
+                      icon: Icon(null),
+                      label: "Daily",
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(null),
+                      label: "Weekly",
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(null),
+                      label: "Monthly",
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(null),
+                      label: "Yearly",
+                    ),
+                  ],
+                ),
+                [
+                  DateList(
+                    onPressed: (index, selectedDate) {
+                      _.selectedDate = selectedDate;
+                      _.update();
+                    }, selectedDate: _.selectedDate
                   ),
-                  BottomNavigationBarItem(
-                    icon: Icon(null),
-                    label: "Weekly",
+                  WeekList(
+                    onPressed: (index, weekEnd, weekStart) {
+                      _.weekend = weekEnd;
+                      _.weekStart = weekStart;
+                      _.update();
+                    }, weekStart: _.weekStart,
                   ),
-                  BottomNavigationBarItem(
-                    icon: Icon(null),
-                    label: "Monthly",
+                  MonthList(
+                    onPressed: (index, selectedDate) {
+                      _.selectedDate = selectedDate;
+                      _.update();
+                    }, selectedDate: _.selectedDate,
                   ),
-                  BottomNavigationBarItem(
-                    icon: Icon(null),
-                    label: "Yearly",
+                  YearList(
+                    onPressed: (index, selectedDate) {
+                      _.selectedDate = selectedDate;
+                      _.update();
+                    }, selectedDate: _.selectedDate,
                   ),
-                ],
-              ),
-              [
-                DateList(),
-                WeekList(),
-                MonthList(),
-                YearList(),
-              ][_.typeIndex],
-              Expanded(
-                child: [
-                  DailyView(),
-                  WeeklyView(),
-                  MonthlyView(),
-                  YearlyView()
                 ][_.typeIndex],
-              ),
-            ],
+                Expanded(
+                  child: [
+                    DailyView(),
+                    WeeklyView(),
+                    MonthlyView(),
+                    YearlyView()
+                  ][_.typeIndex],
+                ),
+              ],
+            ),
           ),
-        ),
-        floatingActionButton: GetBuilder<FloatingActionController>(
-          builder: (_) {
-            return AnimatedOpacity(
-              opacity: _.showFloatingAction? 1 : 0, 
-              duration: Duration(milliseconds: 150),
-              child: TransactionFloatingAction(),
-            );
-          },
-        ),
-      );
-    });
+          floatingActionButton: GetBuilder<FloatingActionController>(
+            builder: (_) {
+              return AnimatedOpacity(
+                opacity: _.showFloatingAction ? 1 : 0,
+                duration: Duration(milliseconds: 150),
+                child: TransactionFloatingAction(),
+              );
+            },
+          ),
+        );
+      },
+    );
   }
 }

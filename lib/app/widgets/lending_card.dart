@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:money_manager/app/theme/mmtheme.dart';
+import 'package:money_manager/app/theme/mm_text_style.dart';
 
 class LendingCard extends StatelessWidget {
   int id;
@@ -30,9 +30,9 @@ class LendingCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dismissible(
       background: Container(
-        color: status? Colors.red : Colors.green,
+        color: status ? Colors.red : Colors.green,
         child: Icon(
-          status? Icons.close : Icons.check,
+          status ? Icons.close : Icons.check,
           size: 28,
         ),
       ),
@@ -45,11 +45,13 @@ class LendingCard extends StatelessWidget {
       ),
       confirmDismiss: (direction) async {
         bool confirm = false;
-        if (direction == DismissDirection.startToEnd){
+        if (direction == DismissDirection.startToEnd) {
           await Get.defaultDialog(
-            title: "Confirm " + (status? "Pending" : "Complete"),
-            titleStyle: MMTheme.ts3,
-            middleText: "Do you want to mark data as " + (status? "Pending?" : "Complete?"),
+            title: "Confirm " + (status ? "Pending" : "Complete"),
+            titleStyle: MMTextStyle.ts3,
+            middleText: "Do you want to mark data as " +
+                (status ? "Pending?" : "Complete?"),
+            middleTextStyle: MMTextStyle.ts3,
             textCancel: "Back",
             textConfirm: "Confirm",
             confirmTextColor: Colors.white,
@@ -63,10 +65,11 @@ class LendingCard extends StatelessWidget {
             },
           );
         } else {
-            await Get.defaultDialog(
+          await Get.defaultDialog(
             title: "Confirm Delete",
-            titleStyle: MMTheme.ts3,
+            titleStyle: MMTextStyle.ts3,
             middleText: "Do you want to delete the data?",
+            middleTextStyle: MMTextStyle.ts3,
             textCancel: "Back",
             textConfirm: "Confirm",
             confirmTextColor: Colors.white,
@@ -93,11 +96,13 @@ class LendingCard extends StatelessWidget {
                 children: [
                   Text(
                     description,
-                    style: MMTheme.ts1,
+                    style: MMTextStyle.ts3.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   Text(
                     DateFormat('yyyy-MM-dd kk:mm').format(time),
-                    style: MMTheme.ts3,
+                    style: MMTextStyle.ts4,
                   ),
                 ],
               ),
@@ -107,7 +112,7 @@ class LendingCard extends StatelessWidget {
               Container(
                 child: Text(
                   numberFormat.format(amount),
-                  style: MMTheme.ts1.copyWith(
+                  style: MMTextStyle.ts1.copyWith(
                     color: Colors.blue,
                     fontWeight: FontWeight.w600,
                   ),

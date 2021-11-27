@@ -18,8 +18,8 @@ dependencies:
   font_awesome_flutter: ^9.1.0
   form_field_validator: ^1.1.0
   get: 4.1.4
+  get_storage: ^2.0.3
   intl: ^0.17.0
-  localstorage: ^4.0.0+1
   moor_flutter: ^4.0.0
   path: ^1.8.0
   path_provider: ^2.0.2
@@ -37,3 +37,15 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: fonts/Poppins-Regular.ttf
+        - asset: fonts/Poppins-SemiBold.ttf
+        - asset: fonts/Poppins-Black.ttf
+        - asset: fonts/Poppins-Bold.ttf
+        - asset: fonts/Poppins-ExtraBold.ttf
+        - asset: fonts/Poppins-ExtraLight.ttf
+        - asset: fonts/Poppins-Light.ttf
+        - asset: fonts/Poppins-Medium.ttf
+        - asset: fonts/Poppins-Thin.ttf

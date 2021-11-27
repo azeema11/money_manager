@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:money_manager/app/theme/mmtheme.dart';
+import 'package:money_manager/app/theme/mm_text_style.dart';
 
 class LendingReport extends StatelessWidget {
   double lendPending;
@@ -12,14 +12,17 @@ class LendingReport extends StatelessWidget {
     symbol: "₹",
     decimalDigits: 0,
   );
-  LendingReport({required this.lendPending, required this.borrowPending, required this.status});
+  LendingReport(
+      {required this.lendPending,
+      required this.borrowPending,
+      required this.status});
   @override
   Widget build(BuildContext context) {
     return Card(
       elevation: 3,
       child: Container(
         padding: EdgeInsets.all(5.0),
-        height: Get.height / 7,
+        height: Get.height / 9,
         width: Get.width,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -34,14 +37,18 @@ class LendingReport extends StatelessWidget {
                 children: [
                   Container(
                     child: Text(
-                      (status? "Completed" : "Pending") + " lend: ",
-                      style: MMTheme.ts2,
+                      (status ? "Completed" : "Pending") + " lend: ",
+                      style: MMTextStyle.ts3.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                   Container(
                     child: Text(
-                      (status? "Completed" : "Pending") + " borrow: ",
-                      style: MMTheme.ts2,
+                      (status ? "Completed" : "Pending") + " borrow: ",
+                      style: MMTextStyle.ts3.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ],
@@ -58,13 +65,17 @@ class LendingReport extends StatelessWidget {
                   Container(
                     child: Text(
                       numberFormat.format(lendPending),
-                      style: MMTheme.ts2,
+                      style: MMTextStyle.ts3.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                   Container(
                     child: Text(
                       numberFormat.format(borrowPending),
-                      style: MMTheme.ts2,
+                      style: MMTextStyle.ts3.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ],
