@@ -10,7 +10,7 @@ abstract class Routes {
   static const BACKUP_RESTORE = _Paths.BACKUP_RESTORE;
   static const STATISTICS = _Paths.STATISTICS;
   static const PASSWORD_SCREEN = _Paths.PASSWORD_SCREEN;
-  static const SPLASHSCREEN = _Paths.SPLASHSCREEN;
+  static const PLANNER = _Paths.PLANNER;
 }
 
 abstract class _Paths {
@@ -20,5 +20,5 @@ abstract class _Paths {
   static const BACKUP_RESTORE = '/backup-restore';
   static const STATISTICS = '/statistics';
   static const PASSWORD_SCREEN = '/password-screen';
-  static const SPLASHSCREEN = '/splashscreen';
+  static const PLANNER = '/planner';
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:money_manager/app/modules/transactions/controllers/transactions_controller.dart';
-import 'package:money_manager/app/theme/mmtheme.dart';
+import 'package:money_manager/app/theme/mm_text_style.dart';
 import 'package:money_manager/app/widgets/loading.dart';
 import 'package:money_manager/app/widgets/transaction_card.dart';
 import 'package:money_manager/app/widgets/transaction_report.dart';
@@ -30,8 +30,8 @@ class YearlyView extends StatelessWidget {
                 BottomNavigationBar(
                   currentIndex: transactionsController.transactionIndex,
                   iconSize: 0,
-                  selectedFontSize: 18,
-                  unselectedFontSize: 16,
+                  selectedFontSize: 17,
+                  unselectedFontSize: 15,
                   type: BottomNavigationBarType.fixed,
                   onTap: transactionsController.onTap,
                   items: [
@@ -51,13 +51,17 @@ class YearlyView extends StatelessWidget {
                         transactionsController.incomeData.length == 0))
                   Expanded(
                     child: Center(
-                      child: Text("No data"),
+                      child: Text(
+                        "No data",
+                        style: MMTextStyle.ts3,
+                      ),
                     ),
                   )
                 else
                   Expanded(
                     child: ListView.builder(
-                      controller: transactionsController.floatingActionController.scrollController,
+                      controller: transactionsController
+                          .floatingActionController.scrollController,
                       itemCount: transactionsController.transactionIndex == 0
                           ? transactionsController.expenseData.length
                           : transactionsController.incomeData.length,

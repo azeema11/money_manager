@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:money_manager/app/theme/mmtheme.dart';
+import 'package:money_manager/app/theme/mm_text_style.dart';
 
 class TransactionReport extends StatelessWidget {
   double expense;
@@ -34,20 +34,26 @@ class TransactionReport extends StatelessWidget {
                   Container(
                     child: Text(
                       "Total Expense incurred: ",
-                      style: MMTheme.ts2,
+                      style: MMTextStyle.ts3.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                   Container(
                     child: Text(
                       "Total Income received: ",
-                      style: MMTheme.ts2,
+                      style: MMTextStyle.ts3.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                   Container(
                     child: Text(
                       "Total " +
                           (income - expense >= 0 ? "Savings: " : "Overhead: "),
-                      style: MMTheme.ts2,
+                      style: MMTextStyle.ts3.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ],
@@ -64,19 +70,25 @@ class TransactionReport extends StatelessWidget {
                   Container(
                     child: Text(
                       numberFormat.format(expense),
-                      style: MMTheme.ts2,
+                      style: MMTextStyle.ts3.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                   Container(
                     child: Text(
                       numberFormat.format(income),
-                      style: MMTheme.ts2,
+                      style: MMTextStyle.ts3.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                   Container(
                     child: Text(
                       numberFormat.format((income - expense).abs()),
-                      style: MMTheme.ts2,
+                      style: MMTextStyle.ts3.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ],

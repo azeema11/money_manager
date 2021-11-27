@@ -1,15 +1,15 @@
 import 'dart:convert';
 
 import 'package:encrypt/encrypt.dart';
-import 'package:localstorage/localstorage.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:moor_flutter/moor_flutter.dart';
 
 class Encryption {
-  final localStorage = LocalStorage("money_manager");
+  final localStorage = GetStorage("Money Manager");
   final iv = IV.fromLength(16);
 
   Uint8List encrypt(Uint8List plainText) {
-    String keyString = passwordToKey(localStorage.getItem("dbPassword"));
+    String keyString = passwordToKey(localStorage.read("dbPassword"));
     final key = Key.fromUtf8(keyString);
     final encrypter = Encrypter(AES(key));
     final encrypted = encrypter.encryptBytes(
@@ -20,7 +20,7 @@ class Encryption {
   }
 
   Uint8List decrypt(Uint8List encryptedString) {
-    String keyString = passwordToKey(localStorage.getItem("dbPassword"));
+    String keyString = passwordToKey(localStorage.read("dbPassword"));
     final key = Key.fromUtf8(keyString);
     final encrypter = Encrypter(AES(key));
 
