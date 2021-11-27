@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:money_manager/app/data/transaction_types/expense_types.dart';
 import 'package:money_manager/app/data/transaction_types/income_types.dart';
 import 'package:money_manager/app/modules/transactions/controllers/transactions_controller.dart';
-import 'package:money_manager/app/theme/mmtheme.dart';
+import 'package:money_manager/app/theme/mm_text_style.dart';
 import 'package:intl/intl.dart';
 import 'package:money_manager/app/data/database/moor_database.dart';
 import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
@@ -27,7 +27,7 @@ class TransactionFloatingAction extends StatelessWidget {
             color: Colors.green,
           ),
           label: "New Income",
-          labelStyle: MMTheme.ts4.copyWith(color: Colors.white),
+          labelStyle: MMTextStyle.ts4.copyWith(color: Colors.white),
           onTap: () async {
             late double amount;
             late String description;
@@ -147,8 +147,8 @@ class TransactionFloatingAction extends StatelessWidget {
                               }
                               setModalState(() {});
                             },
-                            validator: (String? value){
-                              if(value == null){
+                            validator: (String? value) {
+                              if (value == null) {
                                 return "Select type";
                               }
                             },
@@ -164,13 +164,14 @@ class TransactionFloatingAction extends StatelessWidget {
                                       ? 'No date chosen'
                                       : DateFormat('yyyy-MM-dd kk:mm')
                                           .format(date),
-                                  style: MMTheme.ts4.copyWith(color: dateColor),
+                                  style: MMTextStyle.ts4
+                                      .copyWith(color: dateColor),
                                 ),
                               ),
                               TextButton(
                                 child: Text(
                                   "Choose Date and Time",
-                                  style: MMTheme.ts4,
+                                  style: MMTextStyle.ts4,
                                 ),
                                 onPressed: () async {
                                   DateTime? selectedDate;
@@ -226,7 +227,8 @@ class TransactionFloatingAction extends StatelessWidget {
                             },
                             child: Text(
                               "Add Income",
-                              style: MMTheme.ts4.copyWith(color: Colors.white),
+                              style:
+                                  MMTextStyle.ts4.copyWith(color: Colors.white),
                             ),
                           ),
                         ),
@@ -245,7 +247,7 @@ class TransactionFloatingAction extends StatelessWidget {
             color: Colors.red,
           ),
           label: "New Expense",
-          labelStyle: MMTheme.ts4.copyWith(color: Colors.white),
+          labelStyle: MMTextStyle.ts4.copyWith(color: Colors.white),
           onTap: () async {
             late double amount;
             late String description;
@@ -271,6 +273,7 @@ class TransactionFloatingAction extends StatelessWidget {
                             ),
                             decoration: InputDecoration(
                               labelText: "Purpose",
+                              hintStyle: MMTextStyle.ts4,
                               focusColor: Colors.blue,
                               border: OutlineInputBorder(
                                 borderSide: BorderSide(
@@ -365,8 +368,8 @@ class TransactionFloatingAction extends StatelessWidget {
                               }
                               setModalState(() {});
                             },
-                            validator: (String? value){
-                              if(value == null){
+                            validator: (String? value) {
+                              if (value == null) {
                                 return "Select type";
                               }
                             },
@@ -382,13 +385,14 @@ class TransactionFloatingAction extends StatelessWidget {
                                       ? 'No date chosen'
                                       : DateFormat('yyyy-MM-dd kk:mm')
                                           .format(date),
-                                  style: MMTheme.ts4.copyWith(color: dateColor),
+                                  style: MMTextStyle.ts4
+                                      .copyWith(color: dateColor),
                                 ),
                               ),
                               TextButton(
                                 child: Text(
                                   "Choose Date and Time",
-                                  style: MMTheme.ts4,
+                                  style: MMTextStyle.ts4,
                                 ),
                                 onPressed: () async {
                                   DateTime? selectedDate;
@@ -444,7 +448,8 @@ class TransactionFloatingAction extends StatelessWidget {
                             },
                             child: Text(
                               "Add Expense",
-                              style: MMTheme.ts4.copyWith(color: Colors.white),
+                              style:
+                                  MMTextStyle.ts4.copyWith(color: Colors.white),
                             ),
                           ),
                         ),

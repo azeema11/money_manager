@@ -8,8 +8,8 @@ import 'package:money_manager/app/modules/lendings/bindings/lendings_binding.dar
 import 'package:money_manager/app/modules/lendings/views/lendings_view.dart';
 import 'package:money_manager/app/modules/password_screen/bindings/password_screen_binding.dart';
 import 'package:money_manager/app/modules/password_screen/views/password_screen_view.dart';
-import 'package:money_manager/app/modules/splashscreen/bindings/splashscreen_binding.dart';
-import 'package:money_manager/app/modules/splashscreen/views/splashscreen_view.dart';
+import 'package:money_manager/app/modules/planner/bindings/planner_binding.dart';
+import 'package:money_manager/app/modules/planner/views/planner_view.dart';
 import 'package:money_manager/app/modules/statistics/bindings/statistics_binding.dart';
 import 'package:money_manager/app/modules/statistics/views/statistics_view.dart';
 import 'package:money_manager/app/modules/transactions/bindings/transactions_binding.dart';
@@ -20,8 +20,6 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.SPLASHSCREEN;
-
   static final routes = [
     GetPage(
       name: _Paths.HOME,
@@ -30,7 +28,8 @@ class AppPages {
         HomeBinding(),
         TransactionsBinding(),
         LendingsBinding(),
-        BackupRestoreBinding()
+        BackupRestoreBinding(),
+        PlannerBinding(),
       ],
     ),
     GetPage(
@@ -59,9 +58,9 @@ class AppPages {
       binding: PasswordScreenBinding(),
     ),
     GetPage(
-      name: _Paths.SPLASHSCREEN,
-      page: () => SplashscreenView(),
-      binding: SplashscreenBinding(),
+      name: _Paths.PLANNER,
+      page: () => PlannerView(),
+      binding: PlannerBinding(),
     ),
   ];
 }

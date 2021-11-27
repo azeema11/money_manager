@@ -7,7 +7,8 @@ import 'package:money_manager/app/modules/home/controllers/home_controller.dart'
 
 class TransactionsController extends GetxController {
   HomeController homeController = Get.find<HomeController>();
-  FloatingActionController floatingActionController = Get.find<FloatingActionController>();
+  FloatingActionController floatingActionController =
+      Get.find<FloatingActionController>();
   int transactionIndex = 0;
   int typeIndex = 0;
   late AppDatabase database;
@@ -24,7 +25,7 @@ class TransactionsController extends GetxController {
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
   DateTime weekend =
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
-  DateTime weekstart =
+  DateTime weekStart =
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)
           .subtract(Duration(
               days: DateTime(DateTime.now().year, DateTime.now().month,
@@ -65,7 +66,6 @@ class TransactionsController extends GetxController {
       )))
         i
     ];
-    print(dates);
   }
 
   void weekrange() {
@@ -78,7 +78,6 @@ class TransactionsController extends GetxController {
       )))
         [i, i.subtract(Duration(days: i.weekday - 1))]
     ];
-    print(weeks);
   }
 
   void monthrange() {
@@ -89,7 +88,6 @@ class TransactionsController extends GetxController {
           i = DateTime(i.year, i.month - 1, i.day))
         i
     ];
-    print(months);
   }
 
   void yearrange() {
@@ -100,7 +98,6 @@ class TransactionsController extends GetxController {
           i = DateTime(i.year - 1, i.month, i.day))
         i
     ];
-    print(years);
   }
 
   double total(List list) {
@@ -127,8 +124,8 @@ class TransactionsController extends GetxController {
 
   Stream<List> getWeeklyTransactions() {
     return StreamZip([
-      database.getWeekExpense(weekend, weekstart),
-      database.getWeekIncome(weekend, weekstart)
+      database.getWeekExpense(weekend, weekStart),
+      database.getWeekIncome(weekend, weekStart)
     ]);
   }
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:money_manager/app/theme/mmtheme.dart';
+import 'package:money_manager/app/theme/mm_text_style.dart';
 import 'package:money_manager/app/widgets/loading.dart';
 
 import '../controllers/backup_restore_controller.dart';
@@ -12,7 +12,7 @@ class BackupRestoreView extends GetView<BackupRestoreController> {
     return GetBuilder<BackupRestoreController>(builder: (_) {
       return Scaffold(
         appBar: AppBar(
-          title: Text('Backup and Restore'),
+          title: Text('Database'),
         ),
         body: Container(
           child: Center(
@@ -25,7 +25,7 @@ class BackupRestoreView extends GetView<BackupRestoreController> {
                         onPressed: () async {
                           await Get.defaultDialog(
                             title: "Confirm Backup",
-                            titleStyle: MMTheme.ts3,
+                            titleStyle: MMTextStyle.ts3,
                             middleText: "Do you want to backup existing data?",
                             textCancel: "Back",
                             textConfirm: "Confirm",
@@ -46,7 +46,8 @@ class BackupRestoreView extends GetView<BackupRestoreController> {
                           width: 70.0,
                           child: Text(
                             "Backup",
-                            style: MMTheme.ts3.copyWith(color: Colors.white),
+                            style:
+                                MMTextStyle.ts3.copyWith(color: Colors.white),
                           ),
                         ),
                       ),
@@ -64,7 +65,8 @@ class BackupRestoreView extends GetView<BackupRestoreController> {
                           width: 70.0,
                           child: Text(
                             "Restore",
-                            style: MMTheme.ts3.copyWith(color: Colors.white),
+                            style:
+                                MMTextStyle.ts3.copyWith(color: Colors.white),
                           ),
                         ),
                       ),

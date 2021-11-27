@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:money_manager/app/theme/mmtheme.dart';
+import 'package:money_manager/app/theme/mm_text_style.dart';
 
 class TransactionCard extends StatelessWidget {
   int id;
@@ -38,8 +38,9 @@ class TransactionCard extends StatelessWidget {
         bool confirm = false;
         await Get.defaultDialog(
           title: "Confirm Delete",
-          titleStyle: MMTheme.ts3,
+          titleStyle: MMTextStyle.ts3,
           middleText: "Do you want to delete the data?",
+          middleTextStyle: MMTextStyle.ts3,
           textCancel: "Back",
           textConfirm: "Confirm",
           confirmTextColor: Colors.white,
@@ -65,15 +66,17 @@ class TransactionCard extends StatelessWidget {
                 children: [
                   Text(
                     description,
-                    style: MMTheme.ts1,
+                    style: MMTextStyle.ts3.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   Text(
                     type,
-                    style: MMTheme.ts3,
+                    style: MMTextStyle.ts4,
                   ),
                   Text(
                     DateFormat('yyyy-MM-dd kk:mm').format(time),
-                    style: MMTheme.ts3,
+                    style: MMTextStyle.ts4,
                   ),
                 ],
               ),
@@ -83,7 +86,7 @@ class TransactionCard extends StatelessWidget {
               Container(
                 child: Text(
                   numberFormat.format(amount),
-                  style: MMTheme.ts1.copyWith(
+                  style: MMTextStyle.ts1.copyWith(
                     color: Colors.blue,
                     fontWeight: FontWeight.w600,
                   ),

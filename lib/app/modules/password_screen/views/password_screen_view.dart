@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:money_manager/app/routes/app_pages.dart';
-import 'package:money_manager/app/theme/mmtheme.dart';
+import 'package:money_manager/app/theme/mm_text_style.dart';
 
 import '../controllers/password_screen_controller.dart';
 
@@ -24,7 +24,7 @@ class PasswordScreenView extends GetView<PasswordScreenController> {
                 alignment: Alignment.center,
                 child: Text(
                   'Enter a new password',
-                  style: MMTheme.ts2,
+                  style: MMTextStyle.ts2,
                 ),
               ),
               SizedBox(
@@ -42,16 +42,12 @@ class PasswordScreenView extends GetView<PasswordScreenController> {
                 validator: (value) {
                   if (value == null || value == "") {
                     _.validate = false;
-                    print(_.validate);
                     return "No Password entered";
                   } else if (value.length < 5) {
                     _.validate = false;
-                    print(_.validate);
                     return "Password must be at least 5 characters";
                   } else {
                     _.validate = true;
-                    print(_.validate);
-                    print("Password Sufficient");
                   }
                 },
               ),
@@ -66,7 +62,8 @@ class PasswordScreenView extends GetView<PasswordScreenController> {
                     if (_.validate) {
                       await Get.defaultDialog(
                         title: "Confirm Password",
-                        titleStyle: MMTheme.ts3,
+                        titleStyle: MMTextStyle.ts3,
+                        middleTextStyle: MMTextStyle.ts4,
                         middleText:
                             "This password will be used to encrypt/decrypt database files on backup/restore\n Confirm Password?",
                         textCancel: "Back",
@@ -78,13 +75,18 @@ class PasswordScreenView extends GetView<PasswordScreenController> {
                         },
                         onCancel: () {
                           _.confirm = false;
-                          Get.back();
                         },
                       );
                       if (_.confirm) {
-                        await _.localStorage.setItem("dbPassword", _.password);
+                        await _.store.write("dbPassword", _.password);
                         Get.offAndToNamed(
                           Routes.HOME,
+                        );
+                        Get.snackbar(
+                          "New password set",
+                          "New database password set",
+                          backgroundColor: Colors.green,
+                          colorText: Colors.white,
                         );
                       }
                     } else {
@@ -98,7 +100,7 @@ class PasswordScreenView extends GetView<PasswordScreenController> {
                   },
                   child: Text(
                     "Submit",
-                    style: MMTheme.ts4.copyWith(color: Colors.white),
+                    style: MMTextStyle.ts4.copyWith(color: Colors.white),
                   ),
                 ),
               ),

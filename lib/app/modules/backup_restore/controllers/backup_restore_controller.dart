@@ -10,7 +10,7 @@ class BackupRestoreController extends GetxController {
   Future backup() async {
     loading = true;
     update();
-    var status = await Permission.storage.request();
+    var status = await Permission.manageExternalStorage.request();
     if (status.isGranted) {
       await backupRestore.backup();
     } else {

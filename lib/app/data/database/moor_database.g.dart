@@ -1141,15 +1141,513 @@ class $BorrowTable extends Borrow with TableInfo<$BorrowTable, BorrowData> {
   }
 }
 
+class PlanData extends DataClass implements Insertable<PlanData> {
+  final String title;
+  final int allocation;
+  final DateTime time;
+  PlanData({required this.title, required this.allocation, required this.time});
+  factory PlanData.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+      {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    return PlanData(
+      title: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}title'])!,
+      allocation: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}allocation'])!,
+      time: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}time'])!,
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['title'] = Variable<String>(title);
+    map['allocation'] = Variable<int>(allocation);
+    map['time'] = Variable<DateTime>(time);
+    return map;
+  }
+
+  PlanCompanion toCompanion(bool nullToAbsent) {
+    return PlanCompanion(
+      title: Value(title),
+      allocation: Value(allocation),
+      time: Value(time),
+    );
+  }
+
+  factory PlanData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return PlanData(
+      title: serializer.fromJson<String>(json['title']),
+      allocation: serializer.fromJson<int>(json['allocation']),
+      time: serializer.fromJson<DateTime>(json['time']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'title': serializer.toJson<String>(title),
+      'allocation': serializer.toJson<int>(allocation),
+      'time': serializer.toJson<DateTime>(time),
+    };
+  }
+
+  PlanData copyWith({String? title, int? allocation, DateTime? time}) =>
+      PlanData(
+        title: title ?? this.title,
+        allocation: allocation ?? this.allocation,
+        time: time ?? this.time,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('PlanData(')
+          ..write('title: $title, ')
+          ..write('allocation: $allocation, ')
+          ..write('time: $time')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      $mrjf($mrjc(title.hashCode, $mrjc(allocation.hashCode, time.hashCode)));
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is PlanData &&
+          other.title == this.title &&
+          other.allocation == this.allocation &&
+          other.time == this.time);
+}
+
+class PlanCompanion extends UpdateCompanion<PlanData> {
+  final Value<String> title;
+  final Value<int> allocation;
+  final Value<DateTime> time;
+  const PlanCompanion({
+    this.title = const Value.absent(),
+    this.allocation = const Value.absent(),
+    this.time = const Value.absent(),
+  });
+  PlanCompanion.insert({
+    required String title,
+    required int allocation,
+    required DateTime time,
+  })  : title = Value(title),
+        allocation = Value(allocation),
+        time = Value(time);
+  static Insertable<PlanData> custom({
+    Expression<String>? title,
+    Expression<int>? allocation,
+    Expression<DateTime>? time,
+  }) {
+    return RawValuesInsertable({
+      if (title != null) 'title': title,
+      if (allocation != null) 'allocation': allocation,
+      if (time != null) 'time': time,
+    });
+  }
+
+  PlanCompanion copyWith(
+      {Value<String>? title, Value<int>? allocation, Value<DateTime>? time}) {
+    return PlanCompanion(
+      title: title ?? this.title,
+      allocation: allocation ?? this.allocation,
+      time: time ?? this.time,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (title.present) {
+      map['title'] = Variable<String>(title.value);
+    }
+    if (allocation.present) {
+      map['allocation'] = Variable<int>(allocation.value);
+    }
+    if (time.present) {
+      map['time'] = Variable<DateTime>(time.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PlanCompanion(')
+          ..write('title: $title, ')
+          ..write('allocation: $allocation, ')
+          ..write('time: $time')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $PlanTable extends Plan with TableInfo<$PlanTable, PlanData> {
+  final GeneratedDatabase _db;
+  final String? _alias;
+  $PlanTable(this._db, [this._alias]);
+  final VerificationMeta _titleMeta = const VerificationMeta('title');
+  late final GeneratedColumn<String?> title = GeneratedColumn<String?>(
+      'title', aliasedName, false,
+      typeName: 'TEXT', requiredDuringInsert: true);
+  final VerificationMeta _allocationMeta = const VerificationMeta('allocation');
+  late final GeneratedColumn<int?> allocation = GeneratedColumn<int?>(
+      'allocation', aliasedName, false,
+      typeName: 'INTEGER', requiredDuringInsert: true);
+  final VerificationMeta _timeMeta = const VerificationMeta('time');
+  late final GeneratedColumn<DateTime?> time = GeneratedColumn<DateTime?>(
+      'time', aliasedName, false,
+      typeName: 'INTEGER', requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [title, allocation, time];
+  @override
+  String get aliasedName => _alias ?? '"plan"';
+  @override
+  String get actualTableName => '"plan"';
+  @override
+  VerificationContext validateIntegrity(Insertable<PlanData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('title')) {
+      context.handle(
+          _titleMeta, title.isAcceptableOrUnknown(data['title']!, _titleMeta));
+    } else if (isInserting) {
+      context.missing(_titleMeta);
+    }
+    if (data.containsKey('allocation')) {
+      context.handle(
+          _allocationMeta,
+          allocation.isAcceptableOrUnknown(
+              data['allocation']!, _allocationMeta));
+    } else if (isInserting) {
+      context.missing(_allocationMeta);
+    }
+    if (data.containsKey('time')) {
+      context.handle(
+          _timeMeta, time.isAcceptableOrUnknown(data['time']!, _timeMeta));
+    } else if (isInserting) {
+      context.missing(_timeMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {title};
+  @override
+  PlanData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return PlanData.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  }
+
+  @override
+  $PlanTable createAlias(String alias) {
+    return $PlanTable(_db, alias);
+  }
+}
+
+class PlanSpend extends DataClass implements Insertable<PlanSpend> {
+  final int id;
+  final String plan;
+  final String description;
+  final int amount;
+  final DateTime time;
+  PlanSpend(
+      {required this.id,
+      required this.plan,
+      required this.description,
+      required this.amount,
+      required this.time});
+  factory PlanSpend.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+      {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    return PlanSpend(
+      id: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
+      plan: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}plan'])!,
+      description: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}description'])!,
+      amount: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}amount'])!,
+      time: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}time'])!,
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['plan'] = Variable<String>(plan);
+    map['description'] = Variable<String>(description);
+    map['amount'] = Variable<int>(amount);
+    map['time'] = Variable<DateTime>(time);
+    return map;
+  }
+
+  PlanSpendsCompanion toCompanion(bool nullToAbsent) {
+    return PlanSpendsCompanion(
+      id: Value(id),
+      plan: Value(plan),
+      description: Value(description),
+      amount: Value(amount),
+      time: Value(time),
+    );
+  }
+
+  factory PlanSpend.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return PlanSpend(
+      id: serializer.fromJson<int>(json['id']),
+      plan: serializer.fromJson<String>(json['plan']),
+      description: serializer.fromJson<String>(json['description']),
+      amount: serializer.fromJson<int>(json['amount']),
+      time: serializer.fromJson<DateTime>(json['time']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'plan': serializer.toJson<String>(plan),
+      'description': serializer.toJson<String>(description),
+      'amount': serializer.toJson<int>(amount),
+      'time': serializer.toJson<DateTime>(time),
+    };
+  }
+
+  PlanSpend copyWith(
+          {int? id,
+          String? plan,
+          String? description,
+          int? amount,
+          DateTime? time}) =>
+      PlanSpend(
+        id: id ?? this.id,
+        plan: plan ?? this.plan,
+        description: description ?? this.description,
+        amount: amount ?? this.amount,
+        time: time ?? this.time,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('PlanSpend(')
+          ..write('id: $id, ')
+          ..write('plan: $plan, ')
+          ..write('description: $description, ')
+          ..write('amount: $amount, ')
+          ..write('time: $time')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(
+      id.hashCode,
+      $mrjc(plan.hashCode,
+          $mrjc(description.hashCode, $mrjc(amount.hashCode, time.hashCode)))));
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is PlanSpend &&
+          other.id == this.id &&
+          other.plan == this.plan &&
+          other.description == this.description &&
+          other.amount == this.amount &&
+          other.time == this.time);
+}
+
+class PlanSpendsCompanion extends UpdateCompanion<PlanSpend> {
+  final Value<int> id;
+  final Value<String> plan;
+  final Value<String> description;
+  final Value<int> amount;
+  final Value<DateTime> time;
+  const PlanSpendsCompanion({
+    this.id = const Value.absent(),
+    this.plan = const Value.absent(),
+    this.description = const Value.absent(),
+    this.amount = const Value.absent(),
+    this.time = const Value.absent(),
+  });
+  PlanSpendsCompanion.insert({
+    this.id = const Value.absent(),
+    required String plan,
+    required String description,
+    required int amount,
+    required DateTime time,
+  })  : plan = Value(plan),
+        description = Value(description),
+        amount = Value(amount),
+        time = Value(time);
+  static Insertable<PlanSpend> custom({
+    Expression<int>? id,
+    Expression<String>? plan,
+    Expression<String>? description,
+    Expression<int>? amount,
+    Expression<DateTime>? time,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (plan != null) 'plan': plan,
+      if (description != null) 'description': description,
+      if (amount != null) 'amount': amount,
+      if (time != null) 'time': time,
+    });
+  }
+
+  PlanSpendsCompanion copyWith(
+      {Value<int>? id,
+      Value<String>? plan,
+      Value<String>? description,
+      Value<int>? amount,
+      Value<DateTime>? time}) {
+    return PlanSpendsCompanion(
+      id: id ?? this.id,
+      plan: plan ?? this.plan,
+      description: description ?? this.description,
+      amount: amount ?? this.amount,
+      time: time ?? this.time,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (plan.present) {
+      map['plan'] = Variable<String>(plan.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (amount.present) {
+      map['amount'] = Variable<int>(amount.value);
+    }
+    if (time.present) {
+      map['time'] = Variable<DateTime>(time.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PlanSpendsCompanion(')
+          ..write('id: $id, ')
+          ..write('plan: $plan, ')
+          ..write('description: $description, ')
+          ..write('amount: $amount, ')
+          ..write('time: $time')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $PlanSpendsTable extends PlanSpends
+    with TableInfo<$PlanSpendsTable, PlanSpend> {
+  final GeneratedDatabase _db;
+  final String? _alias;
+  $PlanSpendsTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
+      'id', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
+  final VerificationMeta _planMeta = const VerificationMeta('plan');
+  late final GeneratedColumn<String?> plan = GeneratedColumn<String?>(
+      'plan', aliasedName, false,
+      typeName: 'TEXT',
+      requiredDuringInsert: true,
+      $customConstraints: 'REFERENCES plan(title)');
+  final VerificationMeta _descriptionMeta =
+      const VerificationMeta('description');
+  late final GeneratedColumn<String?> description = GeneratedColumn<String?>(
+      'description', aliasedName, false,
+      typeName: 'TEXT', requiredDuringInsert: true);
+  final VerificationMeta _amountMeta = const VerificationMeta('amount');
+  late final GeneratedColumn<int?> amount = GeneratedColumn<int?>(
+      'amount', aliasedName, false,
+      typeName: 'INTEGER', requiredDuringInsert: true);
+  final VerificationMeta _timeMeta = const VerificationMeta('time');
+  late final GeneratedColumn<DateTime?> time = GeneratedColumn<DateTime?>(
+      'time', aliasedName, false,
+      typeName: 'INTEGER', requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [id, plan, description, amount, time];
+  @override
+  String get aliasedName => _alias ?? 'plan_spends';
+  @override
+  String get actualTableName => 'plan_spends';
+  @override
+  VerificationContext validateIntegrity(Insertable<PlanSpend> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('plan')) {
+      context.handle(
+          _planMeta, plan.isAcceptableOrUnknown(data['plan']!, _planMeta));
+    } else if (isInserting) {
+      context.missing(_planMeta);
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+          _descriptionMeta,
+          description.isAcceptableOrUnknown(
+              data['description']!, _descriptionMeta));
+    } else if (isInserting) {
+      context.missing(_descriptionMeta);
+    }
+    if (data.containsKey('amount')) {
+      context.handle(_amountMeta,
+          amount.isAcceptableOrUnknown(data['amount']!, _amountMeta));
+    } else if (isInserting) {
+      context.missing(_amountMeta);
+    }
+    if (data.containsKey('time')) {
+      context.handle(
+          _timeMeta, time.isAcceptableOrUnknown(data['time']!, _timeMeta));
+    } else if (isInserting) {
+      context.missing(_timeMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  PlanSpend map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return PlanSpend.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  }
+
+  @override
+  $PlanSpendsTable createAlias(String alias) {
+    return $PlanSpendsTable(_db, alias);
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   late final $ExpenseTable expense = $ExpenseTable(this);
   late final $IncomeTable income = $IncomeTable(this);
   late final $LendTable lend = $LendTable(this);
   late final $BorrowTable borrow = $BorrowTable(this);
+  late final $PlanTable plan = $PlanTable(this);
+  late final $PlanSpendsTable planSpends = $PlanSpendsTable(this);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [expense, income, lend, borrow];
+      [expense, income, lend, borrow, plan, planSpends];
 }
