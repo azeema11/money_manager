@@ -49,11 +49,11 @@ class TransactionsController extends GetxController {
     update();
   }
 
-  void sort(List transactions) {
+  void sort(List? transactions) {
     expenseData = [];
     incomeData = [];
-    expenseData = transactions[0];
-    incomeData = transactions[1];
+    expenseData = transactions?[0];
+    incomeData = transactions?[1];
   }
 
   void daterange() {
@@ -112,34 +112,38 @@ class TransactionsController extends GetxController {
     return StreamZip([
       database.getMonthExpense(selectedDate),
       database.getMonthIncome(selectedDate)
-    ]);
+    ]).asBroadcastStream();
   }
 
   Stream<List> getDailyTransactions() {
     return StreamZip([
       database.getDayExpense(selectedDate),
       database.getDayIncome(selectedDate)
-    ]);
+    ]).asBroadcastStream();
   }
 
   Stream<List> getWeeklyTransactions() {
     return StreamZip([
       database.getWeekExpense(weekend, weekStart),
       database.getWeekIncome(weekend, weekStart)
-    ]);
+    ]).asBroadcastStream();
   }
 
   Stream<List> getYearlyTransactions() {
     return StreamZip([
       database.getYearExpense(selectedDate),
       database.getYearIncome(selectedDate)
-    ]);
+    ]).asBroadcastStream();
   }
 
   @override
   void onInit() async {
     super.onInit();
     database = homeController.database;
+    daterange();
+    weekrange();
+    monthrange();
+    yearrange();
   }
 
   @override

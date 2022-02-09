@@ -11,8 +11,9 @@ class PlannerController extends GetxController {
   List<PlanData> plans = [];
   List<PlanSpend> planSpends = [];
   Map<String, int> balances = {};
+  List<DateTime> months = [];
   DateTime selectedDate =
-      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+      DateTime(DateTime.now().year, DateTime.now().month + 1, 1);
 
   Stream<List> getPlansAndSpends() {
     return StreamZip([
@@ -21,7 +22,18 @@ class PlannerController extends GetxController {
     ]);
   }
 
+  void monthrange() {
+    months = [
+      for (DateTime i =
+              DateTime(DateTime.now().year, DateTime.now().month + 1, 1);
+          i.isAfter(DateTime(2021, 05, 01));
+          i = DateTime(i.year, i.month - 1, 1),)
+        i
+    ];
+  }
+
   void sort(List plansAndSpends) {
+    print(plansAndSpends);
     plans = plansAndSpends[0];
     planSpends = plansAndSpends[1];
     plans.sort((a, b) => a.time.compareTo(b.time));
@@ -38,6 +50,7 @@ class PlannerController extends GetxController {
   void onInit() {
     super.onInit();
     database = homeController.database;
+    monthrange();
   }
 
   @override

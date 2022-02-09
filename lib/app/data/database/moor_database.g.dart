@@ -1336,7 +1336,7 @@ class $PlanTable extends Plan with TableInfo<$PlanTable, PlanData> {
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {title};
+  Set<GeneratedColumn> get $primaryKey => {title, time};
   @override
   PlanData map(Map<String, dynamic> data, {String? tablePrefix}) {
     return PlanData.fromData(data, _db,
@@ -1564,9 +1564,7 @@ class $PlanSpendsTable extends PlanSpends
   final VerificationMeta _planMeta = const VerificationMeta('plan');
   late final GeneratedColumn<String?> plan = GeneratedColumn<String?>(
       'plan', aliasedName, false,
-      typeName: 'TEXT',
-      requiredDuringInsert: true,
-      $customConstraints: 'REFERENCES plan(title)');
+      typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _descriptionMeta =
       const VerificationMeta('description');
   late final GeneratedColumn<String?> description = GeneratedColumn<String?>(

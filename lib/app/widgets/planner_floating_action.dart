@@ -114,8 +114,7 @@ class PlannerFloatingAction extends StatelessWidget {
                                 child: Text(
                                   date == DateTime(0, 0, 0)
                                       ? 'No date chosen'
-                                      : DateFormat('yyyy-MM-dd kk:mm')
-                                          .format(date),
+                                      : DateFormat('yyyy-MM').format(date),
                                   style: MMTextStyle.ts4
                                       .copyWith(color: dateColor),
                                 ),
@@ -141,11 +140,9 @@ class PlannerFloatingAction extends StatelessWidget {
                                   if (selectedDate != null &&
                                       selectedTime != null) {
                                     date = DateTime(
-                                        selectedDate.year,
-                                        selectedDate.month,
-                                        selectedDate.day,
-                                        selectedTime.hour,
-                                        selectedTime.minute);
+                                      selectedDate.year,
+                                      selectedDate.month,
+                                    );
                                     setModalState(() {});
                                   }
                                 },
@@ -332,7 +329,7 @@ class PlannerFloatingAction extends StatelessWidget {
                                 child: Text(
                                   date == DateTime(0, 0, 0)
                                       ? 'No date chosen'
-                                      : DateFormat('yyyy-MM-dd kk:mm')
+                                      : DateFormat('yyyy-MM-dd HH:mm')
                                           .format(date),
                                   style: MMTextStyle.ts4
                                       .copyWith(color: dateColor),

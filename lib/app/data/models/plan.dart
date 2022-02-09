@@ -6,5 +6,5 @@ class Plan extends Table {
   DateTimeColumn get time => dateTime()();
 
   @override
-  Set<Column> get primaryKey => {title};
+  Set<Column> get primaryKey => {title, time};
 }

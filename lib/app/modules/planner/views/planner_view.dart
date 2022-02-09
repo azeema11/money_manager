@@ -26,6 +26,7 @@ class PlannerView extends GetView<PlannerController> {
                 _.update();
               },
               selectedDate: _.selectedDate,
+              months: _.months,
             ),
             Expanded(
               child: StreamBuilder(
@@ -59,8 +60,10 @@ class PlannerView extends GetView<PlannerController> {
                                 )
                                 .toList(),
                             onPlanDelete: (plan) async {
-                              await _.database
-                                  .groupDeletePlanSpends(plan.title);
+                              await _.database.groupDeletePlanSpends(
+                                plan.title,
+                                DateTime(plan.time.year, plan.time.month),
+                              );
                               await _.database.deletePlan(plan);
                               _.update();
                             },
