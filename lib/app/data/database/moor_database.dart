@@ -28,7 +28,6 @@ class AppDatabase extends _$AppDatabase {
           return m.createAll();
         },
         onUpgrade: (Migrator m, int from, int to) async {
-          print(from);
           if (from == 2) {
             await customStatement(
                 '''ALTER TABLE income ADD type TEXT NOT NULL DEFAULT '${IncomeTypeName[IncomeTypes.allowance]}' ''');
