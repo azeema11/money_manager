@@ -20,7 +20,7 @@ class AppDatabase extends _$AppDatabase {
         );
 
   @override
-  int get schemaVersion => 4;
+  int get schemaVersion => 5;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -34,7 +34,9 @@ class AppDatabase extends _$AppDatabase {
             await customStatement(
                 '''ALTER TABLE expense ADD type TEXT NOT NULL DEFAULT '${ExpenseTypeName[ExpenseTypes.food]}' ''');
           }
-          if (from == 3) {
+          if (from == 4) {
+            await m.drop(plan);
+            await m.drop(planSpends);
             await m.createTable(plan);
             await m.createTable(planSpends);
           }
@@ -159,18 +161,29 @@ class AppDatabase extends _$AppDatabase {
           ],
         ))
       .watch();
-  Stream<List<PlanData>> getAllPlans(DateTime date) => (select(plan)
-        ..where((tbl) => tbl.time.month.equals(date.month))
-        ..where((tbl) => tbl.time.year.equals(date.year))
-        ..orderBy(
-          [
-            (u) => OrderingTerm(expression: u.time, mode: OrderingMode.desc),
-          ],
-        ))
-      .watch();
+  Stream<List<PlanData>> getAllPlans(DateTime date) {
+    return (select(plan)
+          ..where((tbl) => tbl.time.isBiggerOrEqualValue(date))
+          ..where(
+            (tbl) => tbl.time.isSmallerThanValue(
+              DateTime(date.year, date.month + 1),
+            ),
+          )
+          ..orderBy(
+            [
+              (u) => OrderingTerm(expression: u.time, mode: OrderingMode.desc),
+            ],
+          ))
+        .watch();
+  }
+
   Stream<List<PlanSpend>> getAllPlanSpends(DateTime date) => (select(planSpends)
-        ..where((tbl) => tbl.time.month.equals(date.month))
-        ..where((tbl) => tbl.time.year.equals(date.year))
+        ..where((tbl) => tbl.time.isBiggerOrEqualValue(date))
+        ..where(
+          (tbl) => tbl.time.isSmallerThanValue(
+            DateTime(date.year, date.month + 1),
+          ),
+        )
         ..orderBy(
           [
             (u) => OrderingTerm(expression: u.time, mode: OrderingMode.desc),
@@ -200,8 +213,12 @@ class AppDatabase extends _$AppDatabase {
   Future deletePlanSpends(PlanSpend planspends) =>
       delete(planSpends).delete(planspends);
 
-  Future groupDeletePlanSpends(String plan) =>
-      (delete(planSpends)..where((tbl) => tbl.plan.equals(plan))).go();
+  Future groupDeletePlanSpends(String plan, DateTime date) =>
+      (delete(planSpends)
+            ..where((tbl) => tbl.time.month.equals(date.month))
+            ..where((tbl) => tbl.time.year.equals(date.year))
+            ..where((tbl) => tbl.plan.equals(plan)))
+          .go();
 
   Future updateBorrow(BorrowData borrowdata) =>
       update(borrow).replace(borrowdata);

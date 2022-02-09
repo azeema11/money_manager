@@ -169,7 +169,21 @@ class LendingsView extends GetView<LendingsController> {
               return AnimatedOpacity(
                 opacity: _.showFloatingAction ? 1 : 0,
                 duration: Duration(milliseconds: 150),
-                child: LendingFloatingAction(),
+                child: LendingFloatingAction(
+                  addBorrowQuery: (borrowCompanion) async {
+                    await controller.database.insertNewBorrow(borrowCompanion);
+                    Get.back();
+                    controller.update();
+                  },
+                  addLendQuery: (lendCompanion) async {
+                    await controller.database.insertNewLend(lendCompanion);
+                    Get.back();
+                    controller.update();
+                  },
+                  f1: controller.f1,
+                  f2: controller.f2,
+                  formKey: controller.formKey,
+                ),
               );
             },
           ),

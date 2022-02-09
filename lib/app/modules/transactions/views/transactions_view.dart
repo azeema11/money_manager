@@ -59,26 +59,34 @@ class TransactionsView extends GetView<TransactionsController> {
                     onPressed: (index, selectedDate) {
                       _.selectedDate = selectedDate;
                       _.update();
-                    }, selectedDate: _.selectedDate
+                    },
+                    selectedDate: _.selectedDate,
+                    dates: _.dates,
                   ),
                   WeekList(
                     onPressed: (index, weekEnd, weekStart) {
                       _.weekend = weekEnd;
                       _.weekStart = weekStart;
                       _.update();
-                    }, weekStart: _.weekStart,
+                    },
+                    weekStart: _.weekStart,
+                    weeks: _.weeks,
                   ),
                   MonthList(
                     onPressed: (index, selectedDate) {
                       _.selectedDate = selectedDate;
                       _.update();
-                    }, selectedDate: _.selectedDate,
+                    },
+                    selectedDate: _.selectedDate,
+                    months: _.months,
                   ),
                   YearList(
                     onPressed: (index, selectedDate) {
                       _.selectedDate = selectedDate;
                       _.update();
-                    }, selectedDate: _.selectedDate,
+                    },
+                    selectedDate: _.selectedDate,
+                    years: _.years,
                   ),
                 ][_.typeIndex],
                 Expanded(
