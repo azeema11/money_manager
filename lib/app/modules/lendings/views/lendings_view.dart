@@ -166,9 +166,8 @@ class LendingsView extends GetView<LendingsController> {
           ),
           floatingActionButton: GetBuilder<FloatingActionController>(
             builder: (_) {
-              return AnimatedOpacity(
-                opacity: _.showFloatingAction ? 1 : 0,
-                duration: Duration(milliseconds: 150),
+              return Visibility(
+                visible: _.showFloatingAction,
                 child: LendingFloatingAction(
                   addBorrowQuery: (borrowCompanion) async {
                     await controller.database.insertNewBorrow(borrowCompanion);

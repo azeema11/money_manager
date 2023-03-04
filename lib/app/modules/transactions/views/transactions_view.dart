@@ -102,9 +102,8 @@ class TransactionsView extends GetView<TransactionsController> {
           ),
           floatingActionButton: GetBuilder<FloatingActionController>(
             builder: (_) {
-              return AnimatedOpacity(
-                opacity: _.showFloatingAction ? 1 : 0,
-                duration: Duration(milliseconds: 150),
+              return Visibility(
+                visible: _.showFloatingAction,
                 child: TransactionFloatingAction(),
               );
             },

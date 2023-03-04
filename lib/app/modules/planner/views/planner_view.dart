@@ -49,6 +49,7 @@ class PlannerView extends GetView<PlannerController> {
                       );
                     } else {
                       return ListView.builder(
+                        controller: _.floatingActionController.scrollController,
                         itemCount: _.plans.length,
                         itemBuilder: (context, index) {
                           return PlanCard(
@@ -86,9 +87,8 @@ class PlannerView extends GetView<PlannerController> {
         ),
         floatingActionButton: GetBuilder<FloatingActionController>(
           builder: (_) {
-            return AnimatedOpacity(
-              opacity: _.showFloatingAction ? 1 : 0,
-              duration: Duration(milliseconds: 150),
+            return Visibility(
+              visible: _.showFloatingAction,
               child: PlannerFloatingAction(),
             );
           },

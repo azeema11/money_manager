@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:drift/native.dart';
 import 'package:money_manager/app/data/models/borrow.dart';
 import 'package:money_manager/app/data/models/expense.dart';
 import 'package:money_manager/app/data/models/income.dart';
@@ -6,17 +9,16 @@ import 'package:money_manager/app/data/models/plan.dart';
 import 'package:money_manager/app/data/models/plan_spends.dart';
 import 'package:money_manager/app/data/transaction_types/expense_types.dart';
 import 'package:money_manager/app/data/transaction_types/income_types.dart';
-import 'package:moor_flutter/moor_flutter.dart';
+import 'package:drift/drift.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 part 'moor_database.g.dart';
 
-@UseMoor(tables: [Expense, Income, Lend, Borrow, Plan, PlanSpends])
+@DriftDatabase(tables: [Expense, Income, Lend, Borrow, Plan, PlanSpends])
 class AppDatabase extends _$AppDatabase {
   AppDatabase()
       : super(
-          (FlutterQueryExecutor.inDatabaseFolder(
-            path: 'db.sqlite',
-            logStatements: true,
-          )),
+          (_openConnection()),
         );
 
   @override
@@ -226,4 +228,18 @@ class AppDatabase extends _$AppDatabase {
   Future updatePlan(PlanData plandata) => update(plan).replace(plandata);
   Future updatePlanSpends(PlanSpend planspends) =>
       update(planSpends).replace(planspends);
+}
+
+LazyDatabase _openConnection() {
+  // the LazyDatabase util lets us find the right location for the file async.
+  return LazyDatabase(() async {
+    // put the database file, called db.sqlite here, into the documents folder
+    // for your app.
+    final dbFolder = await getApplicationDocumentsDirectory();
+    final file = File(join(dbFolder.path, 'db.sqlite'));
+    return NativeDatabase(
+      file,
+      logStatements: true,
+    );
+  });
 }

@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:encrypt/encrypt.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:moor_flutter/moor_flutter.dart';
+import 'package:drift/drift.dart';
 
 class Encryption {
   final localStorage = GetStorage("Money Manager");

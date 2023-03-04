@@ -4,8 +4,12 @@ import 'package:async/async.dart';
 import 'package:money_manager/app/data/database/moor_database.dart';
 import 'package:money_manager/app/modules/home/controllers/home_controller.dart';
 
+import '../../../controllers/floating_action_controller.dart';
+
 class PlannerController extends GetxController {
   HomeController homeController = Get.find<HomeController>();
+  FloatingActionController floatingActionController =
+      Get.find<FloatingActionController>();
   late AppDatabase database;
   final formKey = GlobalKey<FormState>();
   List<PlanData> plans = [];
@@ -32,10 +36,9 @@ class PlannerController extends GetxController {
     ];
   }
 
-  void sort(List plansAndSpends) {
-    print(plansAndSpends);
-    plans = plansAndSpends[0];
-    planSpends = plansAndSpends[1];
+  void sort(List? plansAndSpends) {
+    plans = plansAndSpends?[0] ?? [];
+    planSpends = plansAndSpends?[1] ?? [];
     plans.sort((a, b) => a.time.compareTo(b.time));
     planSpends.sort((a, b) => a.time.compareTo(b.time));
     plans.forEach((element) {

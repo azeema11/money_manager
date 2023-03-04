@@ -52,8 +52,8 @@ class TransactionsController extends GetxController {
   void sort(List? transactions) {
     expenseData = [];
     incomeData = [];
-    expenseData = transactions?[0];
-    incomeData = transactions?[1];
+    expenseData = transactions?[0] ?? [];
+    incomeData = transactions?[1] ?? [];
   }
 
   void daterange() {

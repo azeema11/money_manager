@@ -7,7 +7,8 @@ import 'package:money_manager/app/modules/home/controllers/home_controller.dart'
 
 class LendingsController extends GetxController {
   HomeController homeController = Get.find<HomeController>();
-  FloatingActionController floatingActionController = Get.find<FloatingActionController>();
+  FloatingActionController floatingActionController =
+      Get.find<FloatingActionController>();
   late AppDatabase database;
   final formKey = GlobalKey<FormState>();
   final FocusNode f1 = new FocusNode();
@@ -18,11 +19,11 @@ class LendingsController extends GetxController {
   List<LendData> lendData = [];
   List<BorrowData> borrowData = [];
 
-  void sort(List lendings) {
+  void sort(List? lendings) {
     lendData = [];
     borrowData = [];
-    lendData = lendings[0];
-    borrowData = lendings[1];
+    lendData = lendings?[0] ?? [];
+    borrowData = lendings?[1] ?? [];
   }
 
   void onTapLending(int index) {
